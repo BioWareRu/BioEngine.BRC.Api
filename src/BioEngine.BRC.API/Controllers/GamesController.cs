@@ -25,5 +25,10 @@ namespace BioEngine.BRC.Api.Controllers
         {
             return _gamesRepository;
         }
+
+        protected override string GetUploadPath()
+        {
+            return "games";
+        }
     }
 }

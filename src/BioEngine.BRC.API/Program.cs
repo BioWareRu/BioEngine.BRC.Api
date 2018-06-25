@@ -20,6 +20,7 @@ namespace BioEngine.BRC.Api
                 .AddIPBTokenAuth()
                 .AddBioEngineValidation(assemblies: typeof(Post).Assembly)
                 .AddBioEngineDB(domainAssembly: typeof(Post).Assembly)
+                .AddBioEngineS3Storage()
                 .UseStartup<Startup>();
     }
 }

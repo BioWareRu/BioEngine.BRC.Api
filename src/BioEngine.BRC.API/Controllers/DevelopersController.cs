@@ -27,5 +27,10 @@ namespace BioEngine.BRC.Api.Controllers
         {
             return _developersRepository;
         }
+
+        protected override string GetUploadPath()
+        {
+            return "developers";
+        }
     }
 }

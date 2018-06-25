@@ -1,10 +1,10 @@
-﻿using BioEngine.Core.API;
+﻿using System.Globalization;
+using BioEngine.Core.API;
 using BioEngine.Core.API.Request;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +22,11 @@ namespace BioEngine.BRC.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver
+                    = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddScoped(typeof(BaseControllerContext<>));
             services.AddTransient<RequestParams>();
@@ -50,7 +54,24 @@ namespace BioEngine.BRC.Api
                 app.UseHsts();
             }
 
+            
             app.UseAuthentication();
+            
+            var supportedCultures = new[]
+            {
+                new CultureInfo("ru-RU"),
+                new CultureInfo("ru")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("ru-RU"),
+                // Formatting numbers, dates, etc.
+                SupportedCultures = supportedCultures,
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            });
+            
             app.UseCors("allorigins");
             app.UseHttpsRedirection();
             app.UseMvc();

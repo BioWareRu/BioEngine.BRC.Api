@@ -26,5 +26,10 @@ namespace BioEngine.BRC.Api.Controllers
             entity.Data = newData.Data;
             return entity;
         }
+
+        protected override string GetUploadPath()
+        {
+            return "topics";
+        }
     }
 }
