@@ -18,7 +18,6 @@ namespace BioEngine.BRC.Api.Controllers
         {
             entity.Title = newData.Title;
             entity.Url = newData.Url;
-            entity.Url = newData.Url;
             entity.Description = newData.Description;
             entity.Keywords = newData.Keywords;
             return entity;

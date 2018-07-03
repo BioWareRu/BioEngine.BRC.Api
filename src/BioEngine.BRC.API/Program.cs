@@ -2,12 +2,14 @@
 using BioEngine.Core;
 using BioEngine.Extra.IPB.Api;
 using BioEngine.Extra.IPB.Auth;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace BioEngine.BRC.Api
 {
-    public class Program
+    [UsedImplicitly]
+    public static class Program
     {
         public static void Main(string[] args)
         {
