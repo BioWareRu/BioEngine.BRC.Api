@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BioEngine.BRC.Api.Entities;
 using BioEngine.Core.API;
 using BioEngine.Core.Entities;
+using BioEngine.Core.Interfaces;
 using BioEngine.Core.Repository;
-using BioEngine.Core.Storage;
-using Microsoft.AspNetCore.Mvc;
+using Section = BioEngine.Core.API.Entities.Section;
 
 namespace BioEngine.BRC.Api.Controllers
 {
-    public class SectionsController : SectionController<Section, int>
+    public class SectionsController : SectionController<Section, Core.Entities.Section, int>
     {
         private readonly SectionsRepository _sectionsRepository;
 
@@ -18,12 +19,7 @@ namespace BioEngine.BRC.Api.Controllers
             _sectionsRepository = sectionsRepository;
         }
 
-        protected override Section MapEntity(Section entity, Section newData)
-        {
-            return entity;
-        }
-
-        protected override BioRepository<Section, int> GetRepository()
+        protected override BioRepository<Core.Entities.Section, int> GetRepository()
         {
             return _sectionsRepository;
         }

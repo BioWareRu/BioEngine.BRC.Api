@@ -1,0 +1,10 @@
+@model BioEngine.BRC.Domain.Entities.Gallery
+
+<div>@Html.Raw(Model.Data.Text)</div>
+
+<div>
+    @foreach (var picture in Model.Data.Pictures)
+    {
+        <span><img src="@picture.PublicUri" alt="@picture.FileName"/></span>
+    }
+</div>

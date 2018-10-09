@@ -2,26 +2,21 @@
 using BioEngine.BRC.Domain.Repository;
 using BioEngine.Core.API;
 using BioEngine.Core.Repository;
+using Game = BioEngine.BRC.Api.Entities.Game;
 
 namespace BioEngine.BRC.Api.Controllers
 {
-    public class GamesController : SectionController<Game, int>
+    public class GamesController : SectionController<Game, Domain.Entities.Game, int, GameData>
     {
         private readonly GamesRepository _gamesRepository;
 
-        public GamesController(BaseControllerContext<GamesController> context, GamesRepository gamesRepository) : base(context)
+        public GamesController(BaseControllerContext<GamesController> context, GamesRepository gamesRepository) :
+            base(context)
         {
             _gamesRepository = gamesRepository;
         }
 
-        protected override Game MapEntity(Game entity, Game newData)
-        {
-            entity = MapSectionData(entity, newData);
-            entity.Data = newData.Data;
-            return entity;
-        }
-
-        protected override BioRepository<Game, int> GetRepository()
+        protected override BioRepository<Domain.Entities.Game, int> GetRepository()
         {
             return _gamesRepository;
         }

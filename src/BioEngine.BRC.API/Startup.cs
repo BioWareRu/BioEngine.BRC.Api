@@ -1,12 +1,16 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using BioEngine.BRC.Api.Components;
 using BioEngine.Core.API;
 using BioEngine.Core.API.Request;
+using BioEngine.Core.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace BioEngine.BRC.Api
 {
@@ -23,12 +27,16 @@ namespace BioEngine.BRC.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ContractResolver
-                    = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                {
+                    options.SerializerSettings.ContractResolver
+                        = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                }).AddApplicationPart(typeof(RestController).Assembly)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddScoped(typeof(BaseControllerContext<>));
+            services.AddHttpContextAccessor();
+            services.AddScoped<IViewRenderService, ViewRenderService>();
+            services.AddScoped<IContentRender, ContentRender>();
             services.AddTransient<RequestParams>();
 
             services.AddCors(options =>
@@ -39,6 +47,24 @@ namespace BioEngine.BRC.Api
                     {
                         corsBuilder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials();
                     });
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info {Title = "BRC API", Version = "v1"});
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { }},
+                };
+
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "IPB Auth token",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+                c.AddSecurityRequirement(security);
             });
         }
 
@@ -54,9 +80,9 @@ namespace BioEngine.BRC.Api
                 app.UseHsts();
             }
 
-            
+
             app.UseAuthentication();
-            
+
             var supportedCultures = new[]
             {
                 new CultureInfo("ru-RU"),
@@ -71,9 +97,13 @@ namespace BioEngine.BRC.Api
                 // UI strings that we have localized.
                 SupportedUICultures = supportedCultures
             });
-            
+
             app.UseCors("allorigins");
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "BRC API V1"); });
+
             app.UseMvc();
         }
     }

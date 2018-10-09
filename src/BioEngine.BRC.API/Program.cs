@@ -1,6 +1,8 @@
-﻿using BioEngine.BRC.Domain.Entities;
+﻿using System;
+using System.Text;
+using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core;
-using BioEngine.Extra.IPB.Api;
+using BioEngine.Extra.IPB;
 using BioEngine.Extra.IPB.Auth;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore;
@@ -13,6 +15,7 @@ namespace BioEngine.BRC.Api
     {
         public static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
             CreateWebHostBuilder(args).Build().Run();
         }
 
@@ -23,6 +26,7 @@ namespace BioEngine.BRC.Api
                 .AddBioEngineValidation(assemblies: typeof(Post).Assembly)
                 .AddBioEngineDB(domainAssembly: typeof(Post).Assembly)
                 .AddBioEngineS3Storage()
+                .AddBioEngineSeo()
                 .UseStartup<Startup>();
     }
 }

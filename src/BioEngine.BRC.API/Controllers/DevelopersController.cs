@@ -1,11 +1,13 @@
-﻿using BioEngine.BRC.Domain.Entities;
+﻿using BioEngine.BRC.Api.Entities;
+using BioEngine.BRC.Domain.Entities;
 using BioEngine.BRC.Domain.Repository;
 using BioEngine.Core.API;
 using BioEngine.Core.Repository;
+using Developer = BioEngine.BRC.Api.Entities.Developer;
 
 namespace BioEngine.BRC.Api.Controllers
 {
-    public class DevelopersController : SectionController<Developer, int>
+    public class DevelopersController : SectionController<Developer, Domain.Entities.Developer, int, DeveloperData>
     {
         private readonly DevelopersRepository _developersRepository;
 
@@ -16,14 +18,7 @@ namespace BioEngine.BRC.Api.Controllers
             _developersRepository = developersRepository;
         }
 
-        protected override Developer MapEntity(Developer entity, Developer newData)
-        {
-            entity = MapSectionData(entity, newData);
-            entity.Data = newData.Data;
-            return entity;
-        }
-
-        protected override BioRepository<Developer, int> GetRepository()
+        protected override BioRepository<Domain.Entities.Developer, int> GetRepository()
         {
             return _developersRepository;
         }
