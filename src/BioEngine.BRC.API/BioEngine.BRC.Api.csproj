@@ -57,4 +57,16 @@
             </ItemGroup>
         </Otherwise>
     </Choose>
+    <Choose>
+        <When Condition="Exists('..\..\..\BioEngine.Extra.Facebook')">
+            <ItemGroup>
+                <ProjectReference Include="..\..\..\BioEngine.Extra.Facebook\src\BioEngine.Extra.Facebook\BioEngine.Extra.Facebook.csproj"/>
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="BioEngine.Extra.Facebook" Version="3.0.*"/>
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
 </Project>

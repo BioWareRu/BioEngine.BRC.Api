@@ -2,6 +2,7 @@
 using System.Text;
 using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core;
+using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB;
 using BioEngine.Extra.Twitter;
 using JetBrains.Annotations;
@@ -30,6 +31,7 @@ namespace BioEngine.BRC.Api
                 .AddBioEngineModule<IPBModule>()
                 .AddBioEngineModule<IPBAuthModule>()
                 .AddBioEngineModule<TwitterModule>()
+                .AddBioEngineModule<FacebookModule>()
                 .UseStartup<Startup>();
     }
 }
