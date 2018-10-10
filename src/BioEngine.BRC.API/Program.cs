@@ -3,7 +3,6 @@ using System.Text;
 using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core;
 using BioEngine.Extra.IPB;
-using BioEngine.Extra.IPB.Auth;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -21,12 +20,14 @@ namespace BioEngine.BRC.Api
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .AddIPB()
-                .AddIPBTokenAuth()
-                .AddBioEngineValidation(assemblies: typeof(Post).Assembly)
-                .AddBioEngineDB(domainAssembly: typeof(Post).Assembly)
-                .AddBioEngineS3Storage()
-                .AddBioEngineSeo()
+                .AddBioEngineModule<BioEngineCoreModule, BioEngineCoreModuleConfig>(config =>
+                {
+                    config.Assemblies.Add(typeof(Post).Assembly);
+                    config.EnableValidation = true;
+                    config.MigrationsAssembly = typeof(Post).Assembly;
+                })
+                .AddBioEngineModule<BioEngineIPBModule>()
+                .AddBioEngineModule<BioEngineIPBAuthModule>()
                 .UseStartup<Startup>();
     }
 }
