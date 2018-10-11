@@ -16,15 +16,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: custom
-    custom: build
-    arguments: '--no-restore -c Release'
-    projects: '**/*.csproj'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: publish
-    nobuild: true
-    configuration: 'Release'
-    publishWebProjects: false
+    custom: publish
+    arguments: '--no-restore -c Release --output ./publish'
     projects: '**/*.csproj'
 
