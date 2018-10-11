@@ -31,6 +31,6 @@ steps:
   displayName: 'login to docker hub'
 
 - script: |
-    docker push biowareru/BioEngine.BRC.API:$(Version)
+    docker push biowareru/bioengine-brc-api:$(Version)
   displayName: 'push image to docker hub'
     
