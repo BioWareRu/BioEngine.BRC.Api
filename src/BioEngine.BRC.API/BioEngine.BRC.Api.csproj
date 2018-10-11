@@ -4,7 +4,7 @@
         <UserSecretsId>bw</UserSecretsId>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.App"/>
+        <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Swashbuckle.AspNetCore">
             <Version>3.0.0</Version>
         </PackageReference>
@@ -12,60 +12,60 @@
     <Choose>
         <When Condition="Exists('..\..\..\BioEngine.Core.API')">
             <ItemGroup>
-                <ProjectReference Include="..\..\..\BioEngine.Core.API\src\BioEngine.Core.API\BioEngine.Core.API.csproj"/>
+                <ProjectReference Include="..\..\..\BioEngine.Core.API\src\BioEngine.Core.API\BioEngine.Core.API.csproj" />
             </ItemGroup>
         </When>
         <Otherwise>
             <ItemGroup>
-                <PackageReference Include="BioEngine.Core.API" Version="3.0.*"/>
+                <PackageReference Include="BioEngine.Core.API" Version="3.0.*" />
             </ItemGroup>
         </Otherwise>
     </Choose>
     <Choose>
         <When Condition="Exists('..\..\..\BioEngine.BRC.Domain')">
             <ItemGroup>
-                <ProjectReference Include="..\..\..\BioEngine.BRC.Domain\src\BioEngine.BRC.Domain\BioEngine.BRC.Domain.csproj"/>
+                <ProjectReference Include="..\..\..\BioEngine.BRC.Domain\src\BioEngine.BRC.Domain\BioEngine.BRC.Domain.csproj" />
             </ItemGroup>
         </When>
         <Otherwise>
             <ItemGroup>
-                <PackageReference Include="BioEngine.BRC.Domain" Version="3.0.*"/>
+                <PackageReference Include="BioEngine.BRC.Domain" Version="3.0.*" />
             </ItemGroup>
         </Otherwise>
     </Choose>
     <Choose>
         <When Condition="Exists('..\..\..\BioEngine.Extra.IPB')">
             <ItemGroup>
-                <ProjectReference Include="..\..\..\BioEngine.Extra.IPB\src\BioEngine.Extra.IPB\BioEngine.Extra.IPB.csproj"/>
+                <ProjectReference Include="..\..\..\BioEngine.Extra.IPB\src\BioEngine.Extra.IPB\BioEngine.Extra.IPB.csproj" />
             </ItemGroup>
         </When>
         <Otherwise>
             <ItemGroup>
-                <PackageReference Include="BioEngine.Extra.IPB" Version="3.0.*"/>
+                <PackageReference Include="BioEngine.Extra.IPB" Version="3.0.*" />
             </ItemGroup>
         </Otherwise>
     </Choose>
     <Choose>
         <When Condition="Exists('..\..\..\BioEngine.Extra.Twitter')">
             <ItemGroup>
-                <ProjectReference Include="..\..\..\BioEngine.Extra.Twitter\src\BioEngine.Extra.Twitter\BioEngine.Extra.Twitter.csproj"/>
+                <ProjectReference Include="..\..\..\BioEngine.Extra.Twitter\src\BioEngine.Extra.Twitter\BioEngine.Extra.Twitter.csproj" />
             </ItemGroup>
         </When>
         <Otherwise>
             <ItemGroup>
-                <PackageReference Include="BioEngine.Extra.Twitter" Version="3.0.*"/>
+                <PackageReference Include="BioEngine.Extra.Twitter" Version="3.0.*" />
             </ItemGroup>
         </Otherwise>
     </Choose>
     <Choose>
         <When Condition="Exists('..\..\..\BioEngine.Extra.Facebook')">
             <ItemGroup>
-                <ProjectReference Include="..\..\..\BioEngine.Extra.Facebook\src\BioEngine.Extra.Facebook\BioEngine.Extra.Facebook.csproj"/>
+                <ProjectReference Include="..\..\..\BioEngine.Extra.Facebook\src\BioEngine.Extra.Facebook\BioEngine.Extra.Facebook.csproj" />
             </ItemGroup>
         </When>
         <Otherwise>
             <ItemGroup>
-                <PackageReference Include="BioEngine.Extra.Facebook" Version="3.0.*"/>
+                <PackageReference Include="BioEngine.Extra.Facebook" Version="3.0.*" />
             </ItemGroup>
         </Otherwise>
     </Choose>
