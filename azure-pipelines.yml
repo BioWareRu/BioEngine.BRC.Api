@@ -18,6 +18,7 @@ steps:
     command: custom
     custom: publish
     publishWebProjects: false
+    zipAfterPublish: false
     arguments: '--no-restore -c Release --output ./publish'
     projects: '**/*.csproj'
 
