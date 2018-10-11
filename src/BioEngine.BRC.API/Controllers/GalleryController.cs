@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using BioEngine.BRC.Api.Entities;
 using BioEngine.BRC.Domain.Entities;
 using BioEngine.BRC.Domain.Repository;
 using BioEngine.Core.API;

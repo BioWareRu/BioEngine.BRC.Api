@@ -1,5 +1,4 @@
-﻿using BioEngine.BRC.Api.Entities;
-using BioEngine.BRC.Domain.Entities;
+﻿using BioEngine.BRC.Domain.Entities;
 using BioEngine.BRC.Domain.Repository;
 using BioEngine.Core.API;
 using BioEngine.Core.Repository;

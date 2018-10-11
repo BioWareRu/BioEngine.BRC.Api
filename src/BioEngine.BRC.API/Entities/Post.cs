@@ -3,7 +3,7 @@ using BioEngine.Core.API.Request;
 
 namespace BioEngine.BRC.Api.Entities
 {
-    public class Post : ContentEntityRestModel<Domain.Entities.Post, int, PostData>
+    public class Post : ContentEntityRestModel<int, PostData>
     {
         
     }

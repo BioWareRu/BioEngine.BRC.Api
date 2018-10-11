@@ -3,7 +3,7 @@ using BioEngine.Core.API.Request;
 
 namespace BioEngine.BRC.Api.Entities
 {
-    public class File : ContentEntityRestModel<Domain.Entities.File, int, FileData>
+    public class File : ContentEntityRestModel<int, FileData>
     {
     }
 }

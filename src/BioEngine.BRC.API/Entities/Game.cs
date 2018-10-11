@@ -3,7 +3,7 @@ using BioEngine.Core.API.Request;
 
 namespace BioEngine.BRC.Api.Entities
 {
-    public class Game : SectionRestModel<Domain.Entities.Game, int, GameData>
+    public class Game : SectionRestModel<int, GameData>
     {
     }
 }
