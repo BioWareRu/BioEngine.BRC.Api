@@ -17,6 +17,7 @@ steps:
   inputs:
     command: custom
     custom: publish
+    publishWebProjects: false
     arguments: '--no-restore -c Release --output ./publish'
     projects: '**/*.csproj'
 
