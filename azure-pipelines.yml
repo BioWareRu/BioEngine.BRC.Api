@@ -19,6 +19,7 @@ steps:
     custom: publish
     publishWebProjects: false
     zipAfterPublish: false
+    modifyOutputPath: false
     arguments: '--no-restore -c Release --output ./publish'
     projects: '**/*.csproj'
 
