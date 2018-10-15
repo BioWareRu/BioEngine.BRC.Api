@@ -1,26 +1,18 @@
 ﻿using System.Threading.Tasks;
 using BioEngine.Core.API;
-using BioEngine.Core.Repository;
+using BioEngine.Core.Web;
 using Page = BioEngine.Core.API.Entities.Page;
 
 namespace BioEngine.BRC.Api.Controllers
 {
     public class PagesController : RestController<Page, Core.Entities.Page, int>
     {
-        private readonly PagesRepository _pagesRepository;
-
-        public PagesController(BaseControllerContext<PagesController> context, PagesRepository pagesRepository) :
-            base(context)
+        public PagesController(BaseControllerContext<Core.Entities.Page, int> context) : base(context)
         {
-            _pagesRepository = pagesRepository;
         }
 
-        protected override BioRepository<Core.Entities.Page, int> GetRepository()
-        {
-            return _pagesRepository;
-        }
-
-        protected override async Task<Core.Entities.Page> MapDomainModel(Page restModel, Core.Entities.Page domainModel = null)
+        protected override async Task<Core.Entities.Page> MapDomainModel(Page restModel,
+            Core.Entities.Page domainModel = null)
         {
             domainModel = await base.MapDomainModel(restModel, domainModel);
             domainModel.Title = restModel.Title;

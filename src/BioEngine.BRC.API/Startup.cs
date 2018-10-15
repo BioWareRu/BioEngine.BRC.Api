@@ -2,7 +2,6 @@
 using System.Globalization;
 using BioEngine.BRC.Api.Components;
 using BioEngine.Core.API;
-using BioEngine.Core.API.Request;
 using BioEngine.Core.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,14 +29,12 @@ namespace BioEngine.BRC.Api
                 {
                     options.SerializerSettings.ContractResolver
                         = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-                }).AddApplicationPart(typeof(RestController).Assembly)
+                }).AddApplicationPart(typeof(RestController<,,>).Assembly)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddScoped(typeof(BaseControllerContext<>));
             services.AddHttpContextAccessor();
             services.AddScoped<IViewRenderService, ViewRenderService>();
             services.AddScoped<IContentRender, ContentRender>();
-            services.AddTransient<RequestParams>();
 
             services.AddCors(options =>
             {

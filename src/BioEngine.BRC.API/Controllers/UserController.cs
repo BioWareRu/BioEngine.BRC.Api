@@ -1,12 +1,16 @@
-﻿using BioEngine.Core.API;
-using BioEngine.Core.Interfaces;
+﻿using BioEngine.Core.Interfaces;
+using BioEngine.Core.Web;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BioEngine.BRC.Api.Controllers
 {
+    [ApiController]
+    [Authorize]
+    [Route("v1/[controller]")]
     public class UserController : BaseController
     {
-        public UserController(BaseControllerContext<UserController> context) : base(context)
+        public UserController(BaseControllerContext context) : base(context)
         {
         }
 

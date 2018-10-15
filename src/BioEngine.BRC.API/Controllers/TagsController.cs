@@ -1,22 +1,14 @@
 ﻿using System.Threading.Tasks;
 using BioEngine.Core.API;
-using BioEngine.Core.Repository;
+using BioEngine.Core.Web;
 using Tag = BioEngine.Core.API.Entities.Tag;
 
 namespace BioEngine.BRC.Api.Controllers
 {
     public class TagsController : RestController<Tag, Core.Entities.Tag, int>
     {
-        private readonly TagsRepository _repository;
-
-        public TagsController(BaseControllerContext<TagsController> context, TagsRepository repository) : base(context)
+        public TagsController(BaseControllerContext<Core.Entities.Tag, int> context) : base(context)
         {
-            _repository = repository;
-        }
-
-        protected override BioRepository<Core.Entities.Tag, int> GetRepository()
-        {
-            return _repository;
         }
 
         protected override async Task<Tag> MapRestModel(Core.Entities.Tag domainModel)

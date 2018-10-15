@@ -1,22 +1,14 @@
 ﻿using BioEngine.Core.API;
 using BioEngine.Core.API.Entities;
-using BioEngine.Core.Repository;
+using BioEngine.Core.Entities;
+using BioEngine.Core.Web;
 
 namespace BioEngine.BRC.Api.Controllers
 {
-    public class ContentController : ContentController<ContentEntityItem, Core.Entities.ContentItem, int>
+    public class ContentController : ContentController<ContentEntityItem, ContentItem, int>
     {
-        private readonly ContentRepository _repository;
-
-        public ContentController(BaseControllerContext<ContentController> context, ContentRepository repository) :
-            base(context)
+        public ContentController(BaseControllerContext<ContentItem, int> context) : base(context)
         {
-            _repository = repository;
-        }
-
-        protected override BioRepository<Core.Entities.ContentItem, int> GetRepository()
-        {
-            return _repository;
         }
     }
 }
