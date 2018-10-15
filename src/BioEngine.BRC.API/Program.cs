@@ -30,7 +30,7 @@ namespace BioEngine.BRC.Api
                     config.MigrationsAssembly = typeof(Post).Assembly;
                 })
                 .AddBioEngineModule<InfraModule>()
-                .AddBioEngineModule<IPBModule>()
+                .AddBioEngineModule<IPBApiModule>()
                 .AddBioEngineModule<IPBAuthModule>()
                 .AddBioEngineModule<TwitterModule>()
                 .AddBioEngineModule<FacebookModule>()
