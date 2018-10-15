@@ -2,6 +2,7 @@
 using System.Text;
 using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core;
+using BioEngine.Core.Infra;
 using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB;
 using BioEngine.Extra.Twitter;
@@ -28,6 +29,7 @@ namespace BioEngine.BRC.Api
                     config.EnableValidation = true;
                     config.MigrationsAssembly = typeof(Post).Assembly;
                 })
+                .AddBioEngineModule<InfraModule>()
                 .AddBioEngineModule<IPBModule>()
                 .AddBioEngineModule<IPBAuthModule>()
                 .AddBioEngineModule<TwitterModule>()

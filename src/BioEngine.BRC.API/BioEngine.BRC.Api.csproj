@@ -22,6 +22,18 @@
         </Otherwise>
     </Choose>
     <Choose>
+        <When Condition="Exists('..\..\..\BioEngine.Core.Infra')">
+            <ItemGroup>
+                <ProjectReference Include="..\..\..\BioEngine.Core.Infra\src\BioEngine.Core.Infra\BioEngine.Core.Infra.csproj" />
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="BioEngine.Core.Infra" Version="3.0.*" />
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
+    <Choose>
         <When Condition="Exists('..\..\..\BioEngine.BRC.Domain')">
             <ItemGroup>
                 <ProjectReference Include="..\..\..\BioEngine.BRC.Domain\src\BioEngine.BRC.Domain\BioEngine.BRC.Domain.csproj" />
