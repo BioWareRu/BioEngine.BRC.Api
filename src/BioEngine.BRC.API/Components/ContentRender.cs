@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using BioEngine.BRC.Domain.Core;
+using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core.Entities;
 using BioEngine.Core.Interfaces;
 using JetBrains.Annotations;
@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using File = BioEngine.BRC.Domain.Entities.File;
 
 namespace BioEngine.BRC.Api.Components
 {
@@ -30,16 +31,16 @@ namespace BioEngine.BRC.Api.Components
 
         public async Task<string> RenderHtml(ContentItem contentItem)
         {
-            switch (contentItem.Type)
+            switch (contentItem)
             {
-                case BRCContentTypes.TypePost:
-                    return await _renderService.RenderToStringAsync("content/post", contentItem);
-                case BRCContentTypes.TypeFile:
-                    return await _renderService.RenderToStringAsync("content/file", contentItem);
-                case BRCContentTypes.TypeGallery:
-                    return await _renderService.RenderToStringAsync("content/gallery", contentItem);
+                case Post post:
+                    return await _renderService.RenderToStringAsync("content/post", post);
+                case File file:
+                    return await _renderService.RenderToStringAsync("content/file", file);
+                case Gallery gallery:
+                    return await _renderService.RenderToStringAsync("content/gallery", gallery);
                 default:
-                    throw new Exception($"Unknown content type: {contentItem.Type}");
+                    throw new Exception($"Unknown content type: {contentItem.GetType()}");
             }
         }
     }
