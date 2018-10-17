@@ -11,10 +11,10 @@ namespace BioEngine.BRC.Api.Controllers
         {
         }
 
-        protected override async Task<Core.Entities.Page> MapDomainModel(Page restModel,
+        protected override async Task<Core.Entities.Page> MapDomainModelAsync(Page restModel,
             Core.Entities.Page domainModel = null)
         {
-            domainModel = await base.MapDomainModel(restModel, domainModel);
+            domainModel = await base.MapDomainModelAsync(restModel, domainModel);
             domainModel.Title = restModel.Title;
             domainModel.Url = restModel.Url;
             domainModel.SiteIds = restModel.SiteIds;
@@ -22,9 +22,9 @@ namespace BioEngine.BRC.Api.Controllers
             return domainModel;
         }
 
-        protected override async Task<Page> MapRestModel(Core.Entities.Page domainModel)
+        protected override async Task<Page> MapRestModelAsync(Core.Entities.Page domainModel)
         {
-            var restModel = await base.MapRestModel(domainModel);
+            var restModel = await base.MapRestModelAsync(domainModel);
             restModel.Title = domainModel.Title;
             restModel.Url = domainModel.Url;
             restModel.SiteIds = domainModel.SiteIds;

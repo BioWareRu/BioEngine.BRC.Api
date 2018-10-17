@@ -16,12 +16,12 @@ namespace BioEngine.BRC.Api.Controllers
         {
         }
 
-        public override async Task<ActionResult<StorageItem>> Upload(string name)
+        public override async Task<ActionResult<StorageItem>> UploadAsync(string name)
         {
             using (var ms = new MemoryStream())
             {
                 await Request.Body.CopyToAsync(ms);
-                return await Storage.SaveFile(ms.GetBuffer(), name,
+                return await Storage.SaveFileAsync(ms.GetBuffer(), name,
                     $"gallery/{DateTimeOffset.UtcNow:yyyyddMM}");
             }
         }

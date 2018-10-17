@@ -29,7 +29,7 @@ namespace BioEngine.BRC.Api.Components
             _renderService = renderService;
         }
 
-        public async Task<string> RenderHtml(ContentItem contentItem)
+        public async Task<string> RenderHtmlAsync(ContentItem contentItem)
         {
             switch (contentItem)
             {

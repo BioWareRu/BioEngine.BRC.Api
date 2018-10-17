@@ -11,18 +11,18 @@ namespace BioEngine.BRC.Api.Controllers
         {
         }
 
-        protected override async Task<Site> MapRestModel(Core.Entities.Site domainModel)
+        protected override async Task<Site> MapRestModelAsync(Core.Entities.Site domainModel)
         {
-            var restModel = await base.MapRestModel(domainModel);
+            var restModel = await base.MapRestModelAsync(domainModel);
             restModel.Title = domainModel.Title;
             restModel.Url = domainModel.Url;
             return restModel;
         }
 
-        protected override async Task<Core.Entities.Site> MapDomainModel(Site restModel,
+        protected override async Task<Core.Entities.Site> MapDomainModelAsync(Site restModel,
             Core.Entities.Site domainModel = null)
         {
-            domainModel = await base.MapDomainModel(restModel, domainModel);
+            domainModel = await base.MapDomainModelAsync(restModel, domainModel);
             domainModel.Title = restModel.Title;
             domainModel.Url = restModel.Url;
             return domainModel;
