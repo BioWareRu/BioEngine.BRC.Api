@@ -10,7 +10,7 @@ using File = BioEngine.BRC.Domain.Entities.File;
 
 namespace BioEngine.BRC.Api.Controllers
 {
-    public class FilesController : ContentController<Entities.File, File, int, FileData>
+    public class FilesController : ContentController<File, int, FileData, Entities.Response.File, Entities.Request.FileRequestItem>
     {
         public FilesController(BaseControllerContext<File, int> context) : base(context)
         {

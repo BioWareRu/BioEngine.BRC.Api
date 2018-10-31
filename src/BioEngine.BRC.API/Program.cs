@@ -2,6 +2,7 @@
 using System.Text;
 using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core;
+using BioEngine.Core.API;
 using BioEngine.Core.Infra;
 using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB;
@@ -28,6 +29,10 @@ namespace BioEngine.BRC.Api
                     config.Assemblies.Add(typeof(Post).Assembly);
                     config.EnableValidation = true;
                     config.MigrationsAssembly = typeof(Post).Assembly;
+                })
+                .AddBioEngineModule<ApiModule, ApiModuleConfig>(config =>
+                {
+                    config.Assemblies.Add(typeof(Startup).Assembly);
                 })
                 .AddBioEngineModule<InfraModule>()
                 .AddBioEngineModule<IPBApiModule>()

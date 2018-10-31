@@ -29,7 +29,7 @@ namespace BioEngine.BRC.Api
                 {
                     options.SerializerSettings.ContractResolver
                         = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-                }).AddApplicationPart(typeof(RestController<,,>).Assembly)
+                }).AddApplicationPart(typeof(ResponseRestController<,,>).Assembly)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddHttpContextAccessor();

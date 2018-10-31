@@ -1,13 +1,13 @@
 ﻿using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core.API;
 using BioEngine.Core.Web;
-using Topic = BioEngine.BRC.Api.Entities.Topic;
 
 namespace BioEngine.BRC.Api.Controllers
 {
-    public class TopicsController : SectionController<Topic, Domain.Entities.Topic, int, TopicData>
+    public class TopicsController : SectionController<Topic, int, TopicData, Entities.Response.Topic,
+        Entities.Request.TopicRequestItem>
     {
-        public TopicsController(BaseControllerContext<Domain.Entities.Topic, int> context) : base(context)
+        public TopicsController(BaseControllerContext<Topic, int> context) : base(context)
         {
         }
 

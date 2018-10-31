@@ -1,13 +1,13 @@
 ﻿using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core.API;
 using BioEngine.Core.Web;
-using Developer = BioEngine.BRC.Api.Entities.Developer;
 
 namespace BioEngine.BRC.Api.Controllers
 {
-    public class DevelopersController : SectionController<Developer, Domain.Entities.Developer, int, DeveloperData>
+    public class
+        DevelopersController : SectionController<Developer, int, DeveloperData, Entities.Response.Developer, Entities.Request.DeveloperRequestItem>
     {
-        public DevelopersController(BaseControllerContext<Domain.Entities.Developer, int> context) : base(context)
+        public DevelopersController(BaseControllerContext<Developer, int> context) : base(context)
         {
         }
 

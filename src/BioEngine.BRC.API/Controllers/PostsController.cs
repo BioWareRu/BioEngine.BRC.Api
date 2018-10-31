@@ -1,13 +1,12 @@
 ﻿using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core.API;
 using BioEngine.Core.Web;
-using Post = BioEngine.BRC.Api.Entities.Post;
 
 namespace BioEngine.BRC.Api.Controllers
 {
-    public class PostsController : ContentController<Post, Domain.Entities.Post, int, PostData>
+    public class PostsController : ContentController<Post, int, PostData, Entities.Response.Post, Entities.Request.PostRequestItem>
     {
-        public PostsController(BaseControllerContext<Domain.Entities.Post, int> context) : base(context)
+        public PostsController(BaseControllerContext<Post, int> context) : base(context)
         {
         }
     }
