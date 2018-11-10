@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core.Entities;
+using BioEngine.Core.Entities.Blocks;
 using BioEngine.Core.Interfaces;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +17,6 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using File = BioEngine.BRC.Domain.Entities.File;
 
 namespace BioEngine.BRC.Api.Components
 {
@@ -29,19 +29,9 @@ namespace BioEngine.BRC.Api.Components
             _renderService = renderService;
         }
 
-        public async Task<string> RenderHtmlAsync(ContentItem contentItem)
+        public async Task<string> RenderHtmlAsync(Post post)
         {
-            switch (contentItem)
-            {
-                case Post post:
-                    return await _renderService.RenderToStringAsync("content/post", post);
-                case File file:
-                    return await _renderService.RenderToStringAsync("content/file", file);
-                case Gallery gallery:
-                    return await _renderService.RenderToStringAsync("content/gallery", gallery);
-                default:
-                    throw new Exception($"Unknown content type: {contentItem.GetType()}");
-            }
+            return await _renderService.RenderToStringAsync("content/post", post);
         }
     }
 
