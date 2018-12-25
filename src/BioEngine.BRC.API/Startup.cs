@@ -30,7 +30,7 @@ namespace BioEngine.BRC.Api
                     options.SerializerSettings.ContractResolver
                         = new Newtonsoft.Json.Serialization.DefaultContractResolver();
                 }).AddApplicationPart(typeof(ResponseRestController<,,>).Assembly)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddHttpContextAccessor();
             services.AddScoped<IViewRenderService, ViewRenderService>();
