@@ -1,9 +1,11 @@
+@using BioEngine.Core.Repository
 @model BioEngine.Core.Entities.Blocks.GalleryBlock
-
-<div>@Html.Raw(Model.Data.Text)</div>
-
+@inject StorageItemsRepository StorageItemsRepository
+@{
+    var pictures = await StorageItemsRepository.GetByIdsAsync(Model.Data.PictureIds);
+}
 <div>
-    @foreach (var picture in Model.Data.Pictures)
+    @foreach (var picture in pictures)
     {
         <span><img src="@picture.PublicUri" alt="@picture.FileName"/></span>
     }
