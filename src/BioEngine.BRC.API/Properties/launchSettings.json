@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Payments": {
+    "API": {
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
