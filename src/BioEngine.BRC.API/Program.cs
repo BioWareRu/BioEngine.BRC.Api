@@ -3,7 +3,6 @@ using System.Text;
 using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core;
 using BioEngine.Core.API;
-using BioEngine.Core.Entities.Blocks;
 using BioEngine.Core.Infra;
 using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB;

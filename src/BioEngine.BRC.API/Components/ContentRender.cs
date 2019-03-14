@@ -2,9 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core.Entities;
-using BioEngine.Core.Entities.Blocks;
 using BioEngine.Core.Interfaces;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;

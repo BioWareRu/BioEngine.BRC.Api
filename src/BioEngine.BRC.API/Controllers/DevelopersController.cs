@@ -5,9 +5,9 @@ using BioEngine.Core.Web;
 namespace BioEngine.BRC.Api.Controllers
 {
     public class
-        DevelopersController : SectionController<Developer, int, DeveloperData, Entities.Response.Developer, Entities.Request.DeveloperRequestItem>
+        DevelopersController : SectionController<Developer, DeveloperData, Entities.Response.Developer, Entities.Request.DeveloperRequestItem>
     {
-        public DevelopersController(BaseControllerContext<Developer, int> context) : base(context)
+        public DevelopersController(BaseControllerContext<Developer> context) : base(context)
         {
         }
 

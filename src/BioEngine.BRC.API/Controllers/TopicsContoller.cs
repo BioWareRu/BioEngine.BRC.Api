@@ -4,10 +4,10 @@ using BioEngine.Core.Web;
 
 namespace BioEngine.BRC.Api.Controllers
 {
-    public class TopicsController : SectionController<Topic, int, TopicData, Entities.Response.Topic,
+    public class TopicsController : SectionController<Topic, TopicData, Entities.Response.Topic,
         Entities.Request.TopicRequestItem>
     {
-        public TopicsController(BaseControllerContext<Topic, int> context) : base(context)
+        public TopicsController(BaseControllerContext<Topic> context) : base(context)
         {
         }
 
