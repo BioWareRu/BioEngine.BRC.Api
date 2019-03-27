@@ -2,27 +2,21 @@
 using System.Globalization;
 using BioEngine.BRC.Api.Components;
 using BioEngine.Core.API;
+using BioEngine.Core.DB;
 using BioEngine.Core.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+    using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace BioEngine.BRC.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().AddJsonOptions(options =>
@@ -49,24 +43,18 @@ namespace BioEngine.BRC.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info {Title = "BRC API", Version = "v1"});
-                var security = new Dictionary<string, IEnumerable<string>>
-                {
-                    {"Bearer", new string[] { }},
-                };
+                var security = new Dictionary<string, IEnumerable<string>> {{"Bearer", new string[] { }},};
 
-                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
-                {
-                    Description = "IPB Auth token",
-                    Name = "Authorization",
-                    In = "header",
-                    Type = "apiKey"
-                });
+                c.AddSecurityDefinition("Bearer",
+                    new ApiKeyScheme
+                    {
+                        Description = "IPB Auth token", Name = "Authorization", In = "header", Type = "apiKey"
+                    });
                 c.AddSecurityRequirement(security);
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, BioContext dbContext)
         {
             if (env.IsDevelopment())
             {
@@ -74,17 +62,18 @@ namespace BioEngine.BRC.Api
             }
             else
             {
+                if (dbContext.Database.GetPendingMigrations().Any())
+                {
+                    dbContext.Database.Migrate();
+                }
+
                 app.UseHsts();
             }
 
 
             app.UseAuthentication();
 
-            var supportedCultures = new[]
-            {
-                new CultureInfo("ru-RU"),
-                new CultureInfo("ru")
-            };
+            var supportedCultures = new[] {new CultureInfo("ru-RU"), new CultureInfo("ru")};
 
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
