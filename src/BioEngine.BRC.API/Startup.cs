@@ -3,7 +3,7 @@ using System.Globalization;
 using BioEngine.BRC.Api.Components;
 using BioEngine.Core.API;
 using BioEngine.Core.DB;
-using BioEngine.Core.Interfaces;
+using BioEngine.Core.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
