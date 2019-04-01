@@ -3,6 +3,7 @@ using System.Globalization;
 using BioEngine.BRC.Api.Components;
 using BioEngine.Core.API;
 using BioEngine.Core.DB;
+using BioEngine.Core.Search;
 using BioEngine.Core.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
-    using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace BioEngine.BRC.Api
@@ -54,7 +55,8 @@ namespace BioEngine.BRC.Api
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, BioContext dbContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, BioContext dbContext,
+            IEnumerable<ISearchProvider> searchProviders = default)
         {
             if (env.IsDevelopment())
             {
@@ -68,6 +70,14 @@ namespace BioEngine.BRC.Api
                 }
 
                 app.UseHsts();
+            }
+
+            if (searchProviders.Any())
+            {
+                foreach (var searchProvider in searchProviders)
+                {
+                    searchProvider.InitAsync().GetAwaiter().GetResult();
+                }
             }
 
 

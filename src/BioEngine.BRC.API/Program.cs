@@ -29,6 +29,7 @@ namespace BioEngine.BRC.Api
                     config.Assemblies.Add(typeof(Developer).Assembly);
                     config.EnableValidation = true;
                     config.MigrationsAssembly = typeof(Developer).Assembly;
+                    config.EnableElasticSearch = true;
                 })
                 .AddBioEngineModule<ApiModule, ApiModuleConfig>(config =>
                 {
