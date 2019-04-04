@@ -20,11 +20,7 @@ namespace BioEngine.BRC.Api
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddJsonOptions(options =>
-                {
-                    options.SerializerSettings.ContractResolver
-                        = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-                }).AddApplicationPart(typeof(ResponseRestController<,>).Assembly)
+            services.AddMvc().AddApplicationPart(typeof(ResponseRestController<,>).Assembly)
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddHttpContextAccessor();
