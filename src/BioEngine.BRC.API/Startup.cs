@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using BioEngine.BRC.Api.Components;
 using BioEngine.Core.API;
 using BioEngine.Core.DB;
 using BioEngine.Core.Search;
 using BioEngine.Core.Web;
+using BioEngine.Extra.IPB.Controllers;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace BioEngine.BRC.Api
 {
@@ -20,7 +21,10 @@ namespace BioEngine.BRC.Api
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddApplicationPart(typeof(ResponseRestController<,>).Assembly)
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson()
+                .AddApplicationPart(typeof(ResponseRestController<,>).Assembly)
+                .AddApplicationPart(typeof(ForumsController).Assembly)
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddHttpContextAccessor();
@@ -33,25 +37,28 @@ namespace BioEngine.BRC.Api
                 options.AddPolicy("allorigins",
                     corsBuilder =>
                     {
-                        corsBuilder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod().AllowCredentials();
+                        corsBuilder.AllowAnyHeader().AllowAnyMethod().AllowCredentials().SetIsOriginAllowed(s => true);
                     });
             });
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info {Title = "BRC API", Version = "v1"});
-                var security = new Dictionary<string, IEnumerable<string>> {{"Bearer", new string[] { }},};
-
-                c.AddSecurityDefinition("Bearer",
-                    new ApiKeyScheme
-                    {
-                        Description = "IPB Auth token", Name = "Authorization", In = "header", Type = "apiKey"
-                    });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "BRC API", Version = "v1"});
+                //var security = new Dictionary<string, IEnumerable<string>> {,};
+                var scheme = new OpenApiSecurityScheme
+                {
+                    Description = "IPB Auth token",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                };
+                var security = new OpenApiSecurityRequirement() {{scheme, new string[] { }}};
+                c.AddSecurityDefinition("Bearer", scheme);
                 c.AddSecurityRequirement(security);
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, BioContext dbContext,
+        public void Configure(IApplicationBuilder app, IHostEnvironment env, BioContext dbContext,
             IEnumerable<ISearchProvider> searchProviders = default)
         {
             if (env.IsDevelopment())
@@ -64,8 +71,6 @@ namespace BioEngine.BRC.Api
                 {
                     dbContext.Database.Migrate();
                 }
-
-                app.UseHsts();
             }
 
             if (searchProviders.Any())
@@ -77,7 +82,10 @@ namespace BioEngine.BRC.Api
             }
 
 
+            app.UseRouting();
+
             app.UseAuthentication();
+            app.UseAuthorization();
 
             var supportedCultures = new[] {new CultureInfo("ru-RU"), new CultureInfo("ru")};
 
@@ -91,12 +99,14 @@ namespace BioEngine.BRC.Api
             });
 
             app.UseCors("allorigins");
-            app.UseHttpsRedirection();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "BRC API V1"); });
 
-            app.UseMvc();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

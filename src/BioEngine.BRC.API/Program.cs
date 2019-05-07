@@ -8,8 +8,8 @@ using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB;
 using BioEngine.Extra.Twitter;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace BioEngine.BRC.Api
 {
@@ -19,11 +19,11 @@ namespace BioEngine.BRC.Api
         public static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
                 .AddBioEngineModule<CoreModule, CoreModuleConfig>(config =>
                 {
                     config.Assemblies.Add(typeof(Developer).Assembly);
@@ -40,6 +40,9 @@ namespace BioEngine.BRC.Api
                 .AddBioEngineModule<IPBAuthModule>()
                 .AddBioEngineModule<TwitterModule>()
                 .AddBioEngineModule<FacebookModule>()
-                .UseStartup<Startup>();
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }
