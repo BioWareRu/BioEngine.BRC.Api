@@ -29,7 +29,7 @@ steps:
           projects: '**/*.csproj'
 
     - script: |
-          docker build -f src/BioEngine.BRC.API/Dockerfile src/BioEngine.BRC.API/publish -t biowareru/bioengine-brc-api:$(Version)
+          docker build -f src/BioEngine.BRC.API/Dockerfile ./publish -t biowareru/bioengine-brc-api:$(Version)
       displayName: 'build docker image'
 
     - script: |
