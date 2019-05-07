@@ -45,16 +45,21 @@ namespace BioEngine.BRC.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "BRC API", Version = "v1"});
                 //var security = new Dictionary<string, IEnumerable<string>> {,};
-                var scheme = new OpenApiSecurityScheme
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
-                    Description = "IPB Auth token",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey
-                };
-                var security = new OpenApiSecurityRequirement() {{scheme, new string[] { }}};
-                c.AddSecurityDefinition("Bearer", scheme);
-                c.AddSecurityRequirement(security);
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Description = "IPB Auth token",
+                            Name = "Authorization",
+                            In = ParameterLocation.Header,
+                            Type = SecuritySchemeType.ApiKey
+                        },
+                        new string[] { }
+                    }
+                });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {Type = SecuritySchemeType.ApiKey});
             });
         }
 
