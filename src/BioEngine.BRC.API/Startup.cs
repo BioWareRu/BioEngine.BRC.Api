@@ -73,13 +73,11 @@ namespace BioEngine.BRC.Api
                 }
             }
 
-            if (searchProviders.Any())
-            {
+            if (searchProviders != null)
                 foreach (var searchProvider in searchProviders)
                 {
                     searchProvider.InitAsync().GetAwaiter().GetResult();
                 }
-            }
 
 
             app.UseRouting();
