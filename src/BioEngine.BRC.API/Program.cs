@@ -4,6 +4,8 @@ using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core;
 using BioEngine.Core.API;
 using BioEngine.Core.Infra;
+using BioEngine.Extra.Ads;
+using BioEngine.Extra.Ads.Entities;
 using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB;
 using BioEngine.Extra.Twitter;
@@ -27,6 +29,7 @@ namespace BioEngine.BRC.Api
                 .AddBioEngineModule<CoreModule, CoreModuleConfig>(config =>
                 {
                     config.Assemblies.Add(typeof(Developer).Assembly);
+                    config.Assemblies.Add(typeof(Ad).Assembly);
                     config.EnableValidation = true;
                     config.MigrationsAssembly = typeof(Developer).Assembly;
                     config.EnableElasticSearch = true;
@@ -34,12 +37,14 @@ namespace BioEngine.BRC.Api
                 .AddBioEngineModule<ApiModule, ApiModuleConfig>(config =>
                 {
                     config.Assemblies.Add(typeof(Startup).Assembly);
+                    config.Assemblies.Add(typeof(Extra.Ads.Api.Entities.Ad).Assembly);
                 })
                 .AddBioEngineModule<InfraModule>()
                 .AddBioEngineModule<IPBApiModule>()
                 .AddBioEngineModule<IPBAuthModule>()
                 .AddBioEngineModule<TwitterModule>()
                 .AddBioEngineModule<FacebookModule>()
+                .AddBioEngineModule<AdsModule>()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
