@@ -75,10 +75,48 @@ namespace BioEngine.BRC.Api
                     config.SecretKey = configuration["BE_STORAGE_S3_SECRET_KEY"];
                 })
                 .AddModule<SeoModule>()
-                .AddModule<IPBApiModule>()
+                .AddModule<IPBApiModule, IPBModuleConfig>((config, configuration, env) =>
+                {
+                    bool.TryParse(configuration["BE_IPB_API_DEV_MODE"] ?? "", out var devMode);
+                    int.TryParse(configuration["BE_IPB_API_ADMIN_GROUP_ID"], out var adminGroupId);
+                    int.TryParse(configuration["BE_IPB_API_PUBLISHER_GROUP_ID"], out var publisherGroupId);
+                    int.TryParse(configuration["BE_IPB_API_EDITOR_GROUP_ID"], out var editorGroupId);
+                    if (!Uri.TryCreate(configuration["BE_IPB_URL"], UriKind.Absolute, out var ipbUrl))
+                    {
+                        throw new ArgumentException($"Can't parse IPB url; {configuration["BE_IPB_URL"]}");
+                    }
+
+                    config.DevMode = devMode;
+                    config.AdminGroupId = adminGroupId;
+                    config.PublisherGroupId = publisherGroupId;
+                    config.EditorGroupId = editorGroupId;
+                    config.Url = ipbUrl;
+                    config.ApiClientId = configuration["BE_IPB_API_CLIENT_ID"];
+                    config.ApiReadonlyKey = configuration["BE_IPB_API_READONLY_KEY"];
+                    config.IntegrationKey = configuration["BE_IPB_INTEGRATION_KEY"];
+                })
                 .AddModule<IPBAuthModule>()
-                .AddModule<TwitterModule>()
-                .AddModule<FacebookModule>()
+                .AddModule<TwitterModule, TwitterModuleConfig>((config, configuration, env) =>
+                {
+                    config.ConsumerKey = configuration["BE_TWITTER_CONSUMER_KEY"];
+                    config.ConsumerSecret = configuration["BE_TWITTER_CONSUMER_SECRET"];
+                    config.AccessToken = configuration["BE_TWITTER_ACCESS_TOKEN"];
+                    config.AccessTokenSecret = configuration["BE_TWITTER_ACCESS_TOKEN_SECRET"];
+                })
+                .AddModule<FacebookModule, FacebookModuleConfig>((config, configuration, env) =>
+                {
+                    var parsed = Uri.TryCreate(configuration["BE_FACEBOOK_API_URL"], UriKind.Absolute,
+                        out var url);
+                    if (!parsed)
+                    {
+                        throw new ArgumentException(
+                            $"Facebook api url is incorrect: {configuration["BE_FACEBOOK_API_URL"]}");
+                    }
+
+                    config.Url = url;
+                    config.PageId = configuration["BE_FACEBOOK_PAGE_ID"];
+                    config.AccessToken = configuration["BE_FACEBOOK_ACCESS_TOKEN"];
+                })
                 .AddModule<AdsModule>()
                 .GetHostBuilder()
                 .ConfigureWebHostDefaults(webBuilder =>
