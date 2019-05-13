@@ -1,4 +1,5 @@
-﻿using BioEngine.BRC.Domain.Entities;
+﻿using BioEngine.BRC.Domain.Api.Request;
+using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core.API;
 using BioEngine.Core.DB;
 using BioEngine.Core.Repository;
@@ -7,8 +8,8 @@ using BioEngine.Core.Web;
 namespace BioEngine.BRC.Api.Controllers
 {
     public class
-        DevelopersController : SectionController<Developer, DeveloperData, Entities.Response.Developer,
-            Entities.Request.DeveloperRequestItem>
+        DevelopersController : SectionController<Developer, DeveloperData, Domain.Api.Response.Developer,
+            DeveloperRequestItem>
     {
         protected override string GetUploadPath()
         {
