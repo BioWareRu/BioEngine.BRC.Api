@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Text;
 using BioEngine.BRC.Domain;
-using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core.API;
-using BioEngine.Core.DB;
 using BioEngine.Core.Logging.Loki;
-using BioEngine.Core.Search.ElasticSearch;
 using BioEngine.Core.Seo;
-using BioEngine.Core.Storage;
 using BioEngine.Extra.Ads;
 using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB;
@@ -29,53 +25,15 @@ namespace BioEngine.BRC.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             new Core.BioEngine(args)
-                .AddModule<PostgresDatabaseModule, PostgresDatabaseModuleConfig>(
-                    (config, configuration, env) =>
-                    {
-                        config.Host = configuration["BE_POSTGRES_HOST"];
-                        config.Port = int.Parse(configuration["BE_POSTGRES_PORT"]);
-                        config.Username = configuration["BE_POSTGRES_USERNAME"];
-                        config.Password = configuration["BE_POSTGRES_PASSWORD"];
-                        config.Database = configuration["BE_POSTGRES_DATABASE"];
-                        config.EnablePooling = env.IsDevelopment();
-                        config.MigrationsAssembly = typeof(Developer).Assembly;
-                    })
+                .AddPostgresDb()
                 .AddModule<BrcDomainModule>()
-                .AddModule<ElasticSearchModule, ElasticSearchModuleConfig>((config, configuration, env) =>
-                {
-                    config.Url = configuration["BE_ELASTICSEARCH_URI"];
-                    config.Login = configuration["BE_ELASTICSEARCH_LOGIN"];
-                    config.Password = configuration["BE_ELASTICSEARCH_PASSWORD"];
-                })
+                .AddElasticSearch()
                 .AddModule<ApiModule>()
-                .AddModule<LokiLoggingModule, LokiLoggingConfig>((config, configuration, env) =>
-                {
-                    config.Url = configuration["BRC_LOKI_URL"];
-                })
-                .AddModule<S3StorageModule, S3StorageModuleConfig>((config, configuration, env) =>
-                {
-                    var uri = configuration["BE_STORAGE_PUBLIC_URI"];
-                    var success = Uri.TryCreate(uri, UriKind.Absolute, out var publicUri);
-                    if (!success)
-                    {
-                        throw new ArgumentException($"URI {uri} is not proper URI");
-                    }
-
-                    var serverUriStr = configuration["BE_STORAGE_S3_SERVER_URI"];
-                    success = Uri.TryCreate(serverUriStr, UriKind.Absolute, out var serverUri);
-                    if (!success)
-                    {
-                        throw new ArgumentException($"S3 server URI {uri} is not proper URI");
-                    }
-
-                    config.PublicUri = publicUri;
-                    config.ServerUri = serverUri;
-                    config.Bucket = configuration["BE_STORAGE_S3_BUCKET"];
-                    config.AccessKey = configuration["BE_STORAGE_S3_ACCESS_KEY"];
-                    config.SecretKey = configuration["BE_STORAGE_S3_SECRET_KEY"];
-                })
+                .AddModule<LokiLoggingModule, LokiLoggingConfig>((configuration, environment) =>
+                    new LokiLoggingConfig(configuration["BRC_LOKI_URL"]))
+                .AddS3Storage()
                 .AddModule<SeoModule>()
-                .AddModule<IPBApiModule, IPBModuleConfig>((config, configuration, env) =>
+                .AddModule<IPBApiModule, IPBModuleConfig>((configuration, env) =>
                 {
                     bool.TryParse(configuration["BE_IPB_API_DEV_MODE"] ?? "", out var devMode);
                     int.TryParse(configuration["BE_IPB_API_ADMIN_GROUP_ID"], out var adminGroupId);
@@ -86,24 +44,23 @@ namespace BioEngine.BRC.Api
                         throw new ArgumentException($"Can't parse IPB url; {configuration["BE_IPB_URL"]}");
                     }
 
-                    config.DevMode = devMode;
-                    config.AdminGroupId = adminGroupId;
-                    config.PublisherGroupId = publisherGroupId;
-                    config.EditorGroupId = editorGroupId;
-                    config.Url = ipbUrl;
-                    config.ApiClientId = configuration["BE_IPB_API_CLIENT_ID"];
-                    config.ApiReadonlyKey = configuration["BE_IPB_API_READONLY_KEY"];
-                    config.IntegrationKey = configuration["BE_IPB_INTEGRATION_KEY"];
+                    return new IPBModuleConfig(ipbUrl)
+                    {
+                        DevMode = devMode,
+                        AdminGroupId = adminGroupId,
+                        PublisherGroupId = publisherGroupId,
+                        EditorGroupId = editorGroupId,
+                        ApiClientId = configuration["BE_IPB_API_CLIENT_ID"],
+                        ApiReadonlyKey = configuration["BE_IPB_API_READONLY_KEY"],
+                        IntegrationKey = configuration["BE_IPB_INTEGRATION_KEY"]
+                    };
                 })
                 .AddModule<IPBAuthModule>()
-                .AddModule<TwitterModule, TwitterModuleConfig>((config, configuration, env) =>
-                {
-                    config.ConsumerKey = configuration["BE_TWITTER_CONSUMER_KEY"];
-                    config.ConsumerSecret = configuration["BE_TWITTER_CONSUMER_SECRET"];
-                    config.AccessToken = configuration["BE_TWITTER_ACCESS_TOKEN"];
-                    config.AccessTokenSecret = configuration["BE_TWITTER_ACCESS_TOKEN_SECRET"];
-                })
-                .AddModule<FacebookModule, FacebookModuleConfig>((config, configuration, env) =>
+                .AddModule<TwitterModule, TwitterModuleConfig>((configuration, env) =>
+                    new TwitterModuleConfig(configuration["BE_TWITTER_CONSUMER_KEY"],
+                        configuration["BE_TWITTER_CONSUMER_SECRET"], configuration["BE_TWITTER_ACCESS_TOKEN"],
+                        configuration["BE_TWITTER_ACCESS_TOKEN_SECRET"]))
+                .AddModule<FacebookModule, FacebookModuleConfig>((configuration, env) =>
                 {
                     var parsed = Uri.TryCreate(configuration["BE_FACEBOOK_API_URL"], UriKind.Absolute,
                         out var url);
@@ -113,9 +70,8 @@ namespace BioEngine.BRC.Api
                             $"Facebook api url is incorrect: {configuration["BE_FACEBOOK_API_URL"]}");
                     }
 
-                    config.Url = url;
-                    config.PageId = configuration["BE_FACEBOOK_PAGE_ID"];
-                    config.AccessToken = configuration["BE_FACEBOOK_ACCESS_TOKEN"];
+                    return new FacebookModuleConfig(url, configuration["BE_FACEBOOK_PAGE_ID"],
+                        configuration["BE_FACEBOOK_ACCESS_TOKEN"]);
                 })
                 .AddModule<AdsModule>()
                 .GetHostBuilder()
