@@ -1,0 +1,18 @@
+@model BioEngine.Core.Web.Models.BlockViewModel<BioEngine.Core.Entities.Blocks.CutBlock, BioEngine.Core.Entities.Blocks.CutBlockData>
+
+<a href="@Model.ContentEntity.PublicUrl">
+    @{
+        if (string.IsNullOrEmpty(Model.Block.Data.ButtonText))
+        {
+            <text>
+                "Читать дальше"
+            </text>
+        }
+        else
+        {
+            <text>
+                @Model.Block.Data.ButtonText
+            </text>
+        }
+    }
+</a>

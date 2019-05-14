@@ -1,0 +1,24 @@
+@model BioEngine.Core.Web.Models.BlockViewModel<BioEngine.Core.Entities.Blocks.QuoteBlock, BioEngine.Core.Entities.Blocks.QuoteBlockData>
+
+<blockquote>
+    <div>
+        @Html.Raw(Model.Block.Data.Text)
+    </div>
+    <div class="author">
+        @if (!string.IsNullOrEmpty(Model.Block.Data.Link))
+        {
+            if (!string.IsNullOrEmpty(Model.Block.Data.Author))
+            {
+                <a href="@Model.Block.Data.Link">@Model.Block.Data.Author</a>
+            }
+            else
+            {
+                <a href="@Model.Block.Data.Link">Источник</a>
+            }
+        }
+        else if (!string.IsNullOrEmpty(Model.Block.Data.Author))
+        {
+            @Model.Block.Data.Author
+        }
+    </div>
+</blockquote>

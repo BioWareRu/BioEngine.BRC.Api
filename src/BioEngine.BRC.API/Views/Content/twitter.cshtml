@@ -1,0 +1,12 @@
+@model BioEngine.Core.Web.Models.BlockViewModel<BioEngine.Core.Entities.Blocks.TwitterBlock, BioEngine.Core.Entities.Blocks.TwitterBlockData>
+
+@{
+    var url = $"https://twitter.com/{Model.Block.Data.TweetAuthor}/status/{Model.Block.Data.TweetId}";
+}
+
+<p style="text-align:center">
+    @* ReSharper disable once Html.Obsolete *@
+    <iframe border=0 frameborder="0" height="250" width="550"
+            src="https://twitframe.com/show?url=@Html.Encode(url)">
+    </iframe>
+</p>

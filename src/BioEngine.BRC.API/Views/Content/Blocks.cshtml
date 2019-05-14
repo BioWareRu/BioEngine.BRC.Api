@@ -1,0 +1,32 @@
+@using BioEngine.Core.Entities
+@using BioEngine.Core.Entities.Blocks
+@using BioEngine.Core.Web.Models
+@model BioEngine.BRC.Api.Components.ContentRendererModel
+
+@{
+    foreach (var block in Model.Entity.Blocks.OrderBy(b => b.Position))
+    {
+        if (block is CutBlock)
+        {
+            if (Model.Mode == ContentEntityViewMode.Entity)
+            {
+                continue;
+            }
+        }
+
+        var modelType = typeof(BlockViewModel<,>).MakeGenericType(block.GetType(), block.GetData().GetType());
+        var model = Activator.CreateInstance(modelType, block, Model.Entity);
+        <div class="block block-@block.Type">
+            @{
+                await Html.RenderPartialAsync($"Content/{block.Type}", model);
+            }
+        </div>
+        if (block is CutBlock)
+        {
+            if (Model.Mode == ContentEntityViewMode.List)
+            {
+                break;
+            }
+        }
+    }
+}
