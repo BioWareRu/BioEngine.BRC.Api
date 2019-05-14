@@ -26,7 +26,7 @@ namespace BioEngine.BRC.Api
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             new Core.BioEngine(args)
                 .AddPostgresDb()
-                .AddModule<BrcDomainModule>()
+                .AddBrcCommon()
                 .AddElasticSearch()
                 .AddModule<ApiModule>()
                 .AddModule<LokiLoggingModule, LokiLoggingConfig>((configuration, environment) =>
