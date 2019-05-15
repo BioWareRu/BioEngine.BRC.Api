@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using BioEngine.BRC.Domain;
+using BioEngine.BRC.Common;
 using BioEngine.Core.API;
 using BioEngine.Core.Logging.Loki;
 using BioEngine.Core.Seo;
@@ -26,7 +26,7 @@ namespace BioEngine.BRC.Api
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             new Core.BioEngine(args)
                 .AddPostgresDb()
-                .AddBrcCommon()
+                .AddBrcApiDomain()
                 .AddElasticSearch()
                 .AddModule<ApiModule>()
                 .AddModule<LokiLoggingModule, LokiLoggingConfig>((configuration, environment) =>
