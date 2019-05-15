@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
 using BioEngine.BRC.Api.Components;
 using BioEngine.Core.API;
@@ -9,26 +8,31 @@ using BioEngine.Core.Web;
 using BioEngine.Extra.IPB.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace BioEngine.BRC.Api
 {
-    public class Startup
+    public class Startup : BioEngineApiStartup
     {
-        public void ConfigureServices(IServiceCollection services)
+        public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment) : base(configuration,
+            hostEnvironment)
         {
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson()
-                .AddApplicationPart(typeof(ResponseRestController<,>).Assembly)
-                .AddApplicationPart(typeof(ForumsController).Assembly)
-                .SetCompatibilityVersion(CompatibilityVersion.Latest);
+        }
+
+        protected override IMvcBuilder ConfigureMvc(IMvcBuilder mvcBuilder)
+        {
+            return base.ConfigureMvc(mvcBuilder).AddApplicationPart(typeof(ForumsController).Assembly);
+        }
+
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            base.ConfigureServices(services);
+
             services.RegisterApiEntities(GetType().Assembly);
-            services.AddHttpContextAccessor();
-            services.AddScoped<IViewRenderService, ViewRenderService>();
+
             services.AddScoped<IContentRender, ContentRender>();
 
             services.AddCors(options =>
@@ -40,56 +44,11 @@ namespace BioEngine.BRC.Api
                         corsBuilder.AllowAnyHeader().AllowAnyMethod().AllowCredentials().SetIsOriginAllowed(s => true);
                     });
             });
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "BRC API", Version = "v1"});
-                //var security = new Dictionary<string, IEnumerable<string>> {,};
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Description = "IPB Auth token",
-                            Name = "Authorization",
-                            In = ParameterLocation.Header,
-                            Type = SecuritySchemeType.ApiKey
-                        },
-                        new string[] { }
-                    }
-                });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {Type = SecuritySchemeType.ApiKey});
-            });
         }
 
-        public void Configure(IApplicationBuilder app, IHostEnvironment env, BioContext dbContext,
-            IEnumerable<ISearchProvider> searchProviders = default)
+        protected override void ConfigureBeforeRouting(IApplicationBuilder app, IHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                if (dbContext.Database.GetPendingMigrations().Any())
-                {
-                    dbContext.Database.Migrate();
-                }
-            }
-
-            if (searchProviders != null)
-                foreach (var searchProvider in searchProviders)
-                {
-                    searchProvider.InitAsync().GetAwaiter().GetResult();
-                }
-
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
+            base.ConfigureBeforeRouting(app, env);
             var supportedCultures = new[] {new CultureInfo("ru-RU"), new CultureInfo("ru")};
 
             app.UseRequestLocalization(new RequestLocalizationOptions
@@ -101,15 +60,33 @@ namespace BioEngine.BRC.Api
                 SupportedUICultures = supportedCultures
             });
 
-            app.UseCors("allorigins");
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "BRC API V1"); });
-
-            app.UseEndpoints(endpoints =>
+            using (var scope = app.ApplicationServices.CreateScope())
             {
-                endpoints.MapControllers();
-            });
+                if (env.IsProduction())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<BioContext>();
+                    if (dbContext.Database.GetPendingMigrations().Any())
+                    {
+                        dbContext.Database.Migrate();
+                    }
+                }
+
+
+                var searchProviders = scope.ServiceProvider.GetServices<ISearchProvider>();
+                if (searchProviders != null)
+                {
+                    foreach (var searchProvider in searchProviders)
+                    {
+                        searchProvider.InitAsync().GetAwaiter().GetResult();
+                    }
+                }
+            }
+        }
+
+        protected override void ConfigureAfterRouting(IApplicationBuilder app, IHostEnvironment env)
+        {
+            base.ConfigureAfterRouting(app, env);
+            app.UseCors("allorigins");
         }
     }
 }
