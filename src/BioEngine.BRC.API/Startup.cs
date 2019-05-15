@@ -26,7 +26,7 @@ namespace BioEngine.BRC.Api
                 .AddApplicationPart(typeof(ResponseRestController<,>).Assembly)
                 .AddApplicationPart(typeof(ForumsController).Assembly)
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
-
+            services.RegisterApiEntities(GetType().Assembly);
             services.AddHttpContextAccessor();
             services.AddScoped<IViewRenderService, ViewRenderService>();
             services.AddScoped<IContentRender, ContentRender>();

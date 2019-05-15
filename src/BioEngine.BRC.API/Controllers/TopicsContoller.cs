@@ -1,4 +1,4 @@
-﻿using BioEngine.BRC.Domain.Api.Request;
+﻿using BioEngine.BRC.Api.Entities.Request;
 using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core.API;
 using BioEngine.Core.DB;
@@ -7,7 +7,7 @@ using BioEngine.Core.Web;
 
 namespace BioEngine.BRC.Api.Controllers
 {
-    public class TopicsController : SectionController<Topic, TopicData, Domain.Api.Response.Topic,
+    public class TopicsController : SectionController<Topic, TopicData, Entities.Response.Topic,
         TopicRequestItem>
     {
         protected override string GetUploadPath()
