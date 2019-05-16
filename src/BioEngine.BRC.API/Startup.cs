@@ -32,6 +32,7 @@ namespace BioEngine.BRC.Api
             base.ConfigureServices(services);
 
             services.RegisterApiEntities(GetType().Assembly);
+            services.AddScoped<BRCContentPublisher>();
 
             services.AddScoped<IContentRender, ContentRender>();
 
