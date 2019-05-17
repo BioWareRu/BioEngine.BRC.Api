@@ -15,7 +15,7 @@
         }
 
         var modelType = typeof(BlockViewModel<,>).MakeGenericType(block.GetType(), block.GetData().GetType());
-        var model = Activator.CreateInstance(modelType, block, Model.Entity);
+        var model = Activator.CreateInstance(modelType, block, Model.Entity, Model.Site);
         <div class="block block-@block.Type">
             @{
                 await Html.RenderPartialAsync($"Content/{block.Type}", model);

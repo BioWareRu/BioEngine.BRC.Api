@@ -14,23 +14,25 @@ namespace BioEngine.BRC.Api.Components
             _renderService = renderService;
         }
 
-        public async Task<string> RenderHtmlAsync(IContentEntity contentEntity,
+        public async Task<string> RenderHtmlAsync(IContentEntity contentEntity, Site site,
             ContentEntityViewMode mode = ContentEntityViewMode.List)
         {
             return await _renderService.RenderToStringAsync("Content/Blocks",
-                new ContentRendererModel(contentEntity, mode));
+                new ContentRendererModel(contentEntity, mode, site));
         }
     }
 
     public class ContentRendererModel
     {
-        public ContentRendererModel(IContentEntity entity, ContentEntityViewMode mode)
+        public ContentRendererModel(IContentEntity entity, ContentEntityViewMode mode, Site site)
         {
             Entity = entity;
             Mode = mode;
+            Site = site;
         }
 
         public IContentEntity Entity { get; }
         public ContentEntityViewMode Mode { get; }
+        public Site Site { get; }
     }
 }

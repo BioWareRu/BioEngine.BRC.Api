@@ -1,6 +1,9 @@
 @model BioEngine.Core.Web.Models.BlockViewModel<BioEngine.Core.Entities.Blocks.CutBlock, BioEngine.Core.Entities.Blocks.CutBlockData>
 
-<a href="@Model.ContentEntity.PublicUrl">
+@{
+    var publicUrl = Model.Site.Url + Model.ContentEntity.PublicUrl;
+}
+<a href="@publicUrl">
     @{
         if (string.IsNullOrEmpty(Model.Block.Data.ButtonText))
         {

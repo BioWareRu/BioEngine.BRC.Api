@@ -23,7 +23,7 @@ namespace BioEngine.BRC.Api.Components
         private readonly SitesRepository _sitesRepository;
         private readonly SectionsRepository _sectionsRepository;
         private readonly PropertiesProvider _propertiesProvider;
-        private BrcApiOptions _options;
+        private readonly BrcApiOptions _options;
 
         public BRCContentPublisher(IPBContentPublisher ipbContentPublisher,
             TwitterContentPublisher twitterContentPublisher,
