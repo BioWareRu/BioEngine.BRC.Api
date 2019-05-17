@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using BioEngine.BRC.Api.Components;
 using BioEngine.Core.API;
@@ -45,6 +46,11 @@ namespace BioEngine.BRC.Api
                         corsBuilder.AllowAnyHeader().AllowAnyMethod().AllowCredentials().SetIsOriginAllowed(s => true);
                     });
             });
+
+            services.Configure<BrcApiOptions>(options =>
+            {
+                options.DefaultMainSiteId = Guid.Parse(Configuration["BE_DEFAULT_MAIN_SITE_ID"]);
+            });
         }
 
         protected override void ConfigureBeforeRouting(IApplicationBuilder app, IHostEnvironment env)
@@ -89,5 +95,10 @@ namespace BioEngine.BRC.Api
             base.ConfigureAfterRouting(app, env);
             app.UseCors("allorigins");
         }
+    }
+
+    public class BrcApiOptions
+    {
+        public Guid DefaultMainSiteId { get; set; }
     }
 }

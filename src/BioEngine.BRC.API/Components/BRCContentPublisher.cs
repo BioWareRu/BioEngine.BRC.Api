@@ -10,6 +10,7 @@ using BioEngine.Extra.IPB.Properties;
 using BioEngine.Extra.IPB.Publishing;
 using BioEngine.Extra.Twitter;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 
 namespace BioEngine.BRC.Api.Components
 {
@@ -22,12 +23,13 @@ namespace BioEngine.BRC.Api.Components
         private readonly SitesRepository _sitesRepository;
         private readonly SectionsRepository _sectionsRepository;
         private readonly PropertiesProvider _propertiesProvider;
+        private BrcApiOptions _options;
 
         public BRCContentPublisher(IPBContentPublisher ipbContentPublisher,
             TwitterContentPublisher twitterContentPublisher,
             FacebookContentPublisher facebookContentPublisher, SitesRepository sitesRepository,
             SectionsRepository sectionsRepository,
-            PropertiesProvider propertiesProvider)
+            PropertiesProvider propertiesProvider, IOptions<BrcApiOptions> options)
         {
             _ipbContentPublisher = ipbContentPublisher;
             _twitterContentPublisher = twitterContentPublisher;
@@ -35,7 +37,16 @@ namespace BioEngine.BRC.Api.Components
             _sitesRepository = sitesRepository;
             _sectionsRepository = sectionsRepository;
             _propertiesProvider = propertiesProvider;
+            _options = options.Value;
         }
+
+        private Guid GetMainSiteId(Post post)
+        {
+            return post.SiteIds.Contains(_options.DefaultMainSiteId)
+                ? _options.DefaultMainSiteId
+                : post.SiteIds.First();
+        }
+
 
         public async Task PublishOrDeleteAsync(string currentUserToken, Post post,
             PropertyChange[] changes)
@@ -43,7 +54,7 @@ namespace BioEngine.BRC.Api.Components
             var sites = await _sitesRepository.GetByIdsAsync(post.SiteIds);
             foreach (var site in sites)
             {
-                if (site.Id == post.MainSiteId)
+                if (site.Id == GetMainSiteId(post))
                 {
                     var ipbSettings = await _propertiesProvider.GetAsync<IPBSitePropertiesSet>();
                     if (ipbSettings != null && ipbSettings.ForumId > 0)
@@ -106,7 +117,7 @@ namespace BioEngine.BRC.Api.Components
             var sites = await _sitesRepository.GetByIdsAsync(post.SiteIds);
             foreach (var site in sites)
             {
-                if (site.Id == post.MainSiteId)
+                if (site.Id == GetMainSiteId(post))
                 {
                     var ipbSettings = await _propertiesProvider.GetAsync<IPBSitePropertiesSet>();
                     if (ipbSettings != null && ipbSettings.ForumId > 0)
