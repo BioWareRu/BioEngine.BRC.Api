@@ -56,7 +56,7 @@ namespace BioEngine.BRC.Api.Components
             {
                 if (site.Id == GetMainSiteId(post))
                 {
-                    var ipbSettings = await _propertiesProvider.GetAsync<IPBSitePropertiesSet>();
+                    var ipbSettings = await _propertiesProvider.GetAsync<IPBSitePropertiesSet>(site);
                     if (ipbSettings != null && ipbSettings.ForumId > 0)
                     {
                         await _ipbContentPublisher.PublishAsync(post, site,
@@ -91,7 +91,7 @@ namespace BioEngine.BRC.Api.Components
                     }
                 }
 
-                var facebookSettings = await _propertiesProvider.GetAsync<FacebookSitePropertiesSet>();
+                var facebookSettings = await _propertiesProvider.GetAsync<FacebookSitePropertiesSet>(site);
                 if (facebookSettings != null && facebookSettings.IsEnabled)
                 {
                     var hasChanges = changes != null && changes.Any(c => c.Name == nameof(post.Url));
@@ -119,7 +119,7 @@ namespace BioEngine.BRC.Api.Components
             {
                 if (site.Id == GetMainSiteId(post))
                 {
-                    var ipbSettings = await _propertiesProvider.GetAsync<IPBSitePropertiesSet>();
+                    var ipbSettings = await _propertiesProvider.GetAsync<IPBSitePropertiesSet>(site);
                     if (ipbSettings != null && ipbSettings.ForumId > 0)
                     {
                         await _ipbContentPublisher.DeleteAsync(post,
@@ -137,7 +137,7 @@ namespace BioEngine.BRC.Api.Components
                         site);
                 }
 
-                var facebookSettings = await _propertiesProvider.GetAsync<FacebookSitePropertiesSet>();
+                var facebookSettings = await _propertiesProvider.GetAsync<FacebookSitePropertiesSet>(site);
                 if (facebookSettings != null && facebookSettings.IsEnabled)
                 {
                     await _facebookContentPublisher.DeleteAsync(post,
