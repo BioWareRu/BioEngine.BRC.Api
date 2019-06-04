@@ -1,7 +1,10 @@
+@using BioEngine.Core.Routing
+@using Microsoft.AspNetCore.Routing
 @model BioEngine.Core.Web.Models.BlockViewModel<BioEngine.Core.Entities.Blocks.CutBlock, BioEngine.Core.Entities.Blocks.CutBlockData>
+@inject LinkGenerator LinkGenerator
 
 @{
-    var publicUrl = Model.Site.Url + Model.ContentEntity.PublicUrl;
+    var publicUrl = LinkGenerator.GeneratePublicUrl(Model.ContentEntity, Model.Site);
 }
 <a href="@publicUrl">
     @{

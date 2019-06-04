@@ -13,16 +13,16 @@ namespace BioEngine.BRC.Api.Controllers
     public class RenderController : BaseController
     {
         private readonly IContentRender _contentRender;
-        private readonly PostsRepository _postsRepository;
+        private readonly ContentItemsRepository _contentItemsRepository;
         private readonly SitesRepository _sitesRepository;
         private readonly BrcApiOptions _options;
 
         public RenderController(BaseControllerContext context, IContentRender contentRender,
-            PostsRepository postsRepository, IOptions<BrcApiOptions> options,
+            ContentItemsRepository contentItemsRepository, IOptions<BrcApiOptions> options,
             SitesRepository sitesRepository) : base(context)
         {
             _contentRender = contentRender;
-            _postsRepository = postsRepository;
+            _contentItemsRepository = contentItemsRepository;
             _sitesRepository = sitesRepository;
             _options = options.Value;
         }
@@ -30,7 +30,7 @@ namespace BioEngine.BRC.Api.Controllers
         [HttpGet("post/{id}.html")]
         public async Task<IActionResult> PostAsync(Guid id)
         {
-            var post = await _postsRepository.GetByIdAsync(id);
+            var post = await _contentItemsRepository.GetByIdAsync(id);
             if (post == null)
             {
                 return NotFound();

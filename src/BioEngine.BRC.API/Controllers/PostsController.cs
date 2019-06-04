@@ -1,12 +1,13 @@
 using System.Threading.Tasks;
 using BioEngine.BRC.Api.Components;
-using BioEngine.Core.API.Controllers;
-using BioEngine.Core.API.Entities;
 using BioEngine.Core.DB;
+using BioEngine.Core.Posts.Api;
+using BioEngine.Core.Posts.Api.Entities;
+using BioEngine.Core.Posts.Db;
 using BioEngine.Core.Repository;
 using BioEngine.Core.Users;
 using BioEngine.Core.Web;
-using Post = BioEngine.Core.Entities.Post;
+using Post = BioEngine.Core.Posts.Entities.Post;
 
 namespace BioEngine.BRC.Api.Controllers
 {
@@ -14,7 +15,8 @@ namespace BioEngine.BRC.Api.Controllers
     {
         private readonly BRCContentPublisher _publisher;
 
-        public PostsController(BaseControllerContext<Post> context, BioEntityMetadataManager metadataManager,
+        public PostsController(BaseControllerContext<Post, ContentEntityQueryContext<Post>, PostsRepository> context,
+            BioEntityMetadataManager metadataManager,
             ContentBlocksRepository blocksRepository, IUserDataProvider userDataProvider,
             BRCContentPublisher publisher) : base(context,
             metadataManager, blocksRepository, userDataProvider)
