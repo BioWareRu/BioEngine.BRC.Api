@@ -16,10 +16,10 @@ namespace BioEngine.BRC.Api.Controllers
         private readonly BRCContentPublisher _publisher;
 
         public PostsController(BaseControllerContext<Post, ContentEntityQueryContext<Post>, PostsRepository> context,
-            BioEntityMetadataManager metadataManager,
+            BioEntitiesManager entitiesManager,
             ContentBlocksRepository blocksRepository, IUserDataProvider userDataProvider,
             BRCContentPublisher publisher) : base(context,
-            metadataManager, blocksRepository, userDataProvider)
+            entitiesManager, blocksRepository, userDataProvider)
         {
             _publisher = publisher;
         }

@@ -21,8 +21,8 @@ namespace BioEngine.BRC.Api.Controllers
 
         public DevelopersController(
             BaseControllerContext<Developer, ContentEntityQueryContext<Developer>, DevelopersRepository> context,
-            BioEntityMetadataManager metadataManager, ContentBlocksRepository blocksRepository) : base(context,
-            metadataManager, blocksRepository)
+            BioEntitiesManager entitiesManager, ContentBlocksRepository blocksRepository) : base(context,
+            entitiesManager, blocksRepository)
         {
         }
     }
