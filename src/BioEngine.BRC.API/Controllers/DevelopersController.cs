@@ -20,7 +20,7 @@ namespace BioEngine.BRC.Api.Controllers
 
 
         public DevelopersController(
-            BaseControllerContext<Developer, ContentEntityQueryContext<Developer>, DevelopersRepository> context,
+            BaseControllerContext<Developer, DevelopersRepository> context,
             BioEntitiesManager entitiesManager, ContentBlocksRepository blocksRepository) : base(context,
             entitiesManager, blocksRepository)
         {

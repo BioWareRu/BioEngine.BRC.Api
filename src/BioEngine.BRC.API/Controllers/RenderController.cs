@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using BioEngine.Core.Entities;
+using BioEngine.Core.Abstractions;
 using BioEngine.Core.Repository;
 using BioEngine.Core.Web;
 using Microsoft.AspNetCore.Mvc;

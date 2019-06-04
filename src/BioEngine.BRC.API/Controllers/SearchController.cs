@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
 using BioEngine.BRC.Domain.Entities;
-using BioEngine.Core.DB;
+using BioEngine.Core.Abstractions;
 using BioEngine.Core.Entities;
 using BioEngine.Core.Pages.Entities;
 using BioEngine.Core.Posts.Entities;
-using BioEngine.Core.Repository;
 using BioEngine.Core.Search;
 using BioEngine.Core.Web;
 using Microsoft.AspNetCore.Authorization;
@@ -22,22 +21,21 @@ namespace BioEngine.BRC.Api.Controllers
         {
         }
 
-        private IBioRepository<T, TQueryContext> GetRepository<T, TQueryContext>() where T : class, IEntity
-            where TQueryContext : QueryContext<T>
+        private IBioRepository<TEntity> GetRepository<TEntity>() where TEntity : class, IEntity
         {
-            return HttpContext.RequestServices.GetRequiredService<IBioRepository<T, TQueryContext>>();
+            return HttpContext.RequestServices.GetRequiredService<IBioRepository<TEntity>>();
         }
 
-        private ISearchProvider<T> GetSearchProvider<T>() where T : BaseEntity
+        private ISearchProvider<TEntity> GetSearchProvider<TEntity>() where TEntity : BaseEntity
         {
-            return HttpContext.RequestServices.GetRequiredService<ISearchProvider<T>>();
+            return HttpContext.RequestServices.GetRequiredService<ISearchProvider<TEntity>>();
         }
 
-        private async Task<bool> ReindexAsync<T, TQueryContext>()
-            where T : BaseEntity where TQueryContext : QueryContext<T>
+        private async Task<bool> ReindexAsync<TEntity>()
+            where TEntity : BaseEntity
         {
-            var repository = GetRepository<T, TQueryContext>();
-            var searchProvider = GetSearchProvider<T>();
+            var repository = GetRepository<TEntity>();
+            var searchProvider = GetSearchProvider<TEntity>();
 
             var entities = await repository.GetAllAsync();
             var result = await searchProvider.AddOrUpdateEntitiesAsync(entities.items);
@@ -47,31 +45,31 @@ namespace BioEngine.BRC.Api.Controllers
         [HttpGet("reindex/games")]
         public Task<bool> ReindexGamesAsync()
         {
-            return ReindexAsync<Game, ContentEntityQueryContext<Game>>();
+            return ReindexAsync<Game>();
         }
 
         [HttpGet("reindex/developers")]
         public Task<bool> ReindexDevelopersAsync()
         {
-            return ReindexAsync<Developer, ContentEntityQueryContext<Developer>>();
+            return ReindexAsync<Developer>();
         }
 
         [HttpGet("reindex/topics")]
         public Task<bool> ReindexTopicsAsync()
         {
-            return ReindexAsync<Topic, ContentEntityQueryContext<Topic>>();
+            return ReindexAsync<Topic>();
         }
 
         [HttpGet("reindex/posts")]
         public Task<bool> ReindexPostsAsync()
         {
-            return ReindexAsync<Post, ContentEntityQueryContext<Post>>();
+            return ReindexAsync<Post>();
         }
-        
+
         [HttpGet("reindex/pages")]
         public Task<bool> ReindexPagesAsync()
         {
-            return ReindexAsync<Page, ContentEntityQueryContext<Page>>();
+            return ReindexAsync<Page>();
         }
     }
 }

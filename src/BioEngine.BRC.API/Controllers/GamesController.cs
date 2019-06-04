@@ -17,7 +17,7 @@ namespace BioEngine.BRC.Api.Controllers
         }
 
 
-        public GamesController(BaseControllerContext<Game, ContentEntityQueryContext<Game>, GamesRepository> context,
+        public GamesController(BaseControllerContext<Game, GamesRepository> context,
             BioEntitiesManager entitiesManager, ContentBlocksRepository blocksRepository) : base(context,
             entitiesManager, blocksRepository)
         {
