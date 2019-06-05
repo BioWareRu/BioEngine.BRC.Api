@@ -1,4 +1,4 @@
-﻿using BioEngine.Core.Users;
+﻿using BioEngine.Core.Abstractions;
 using BioEngine.Core.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

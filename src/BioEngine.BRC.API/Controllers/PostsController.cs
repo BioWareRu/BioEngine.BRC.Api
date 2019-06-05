@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
 using BioEngine.BRC.Api.Components;
+using BioEngine.Core.Abstractions;
 using BioEngine.Core.DB;
 using BioEngine.Core.Posts.Api;
 using BioEngine.Core.Posts.Api.Entities;
 using BioEngine.Core.Posts.Db;
 using BioEngine.Core.Repository;
-using BioEngine.Core.Users;
 using BioEngine.Core.Web;
 using Post = BioEngine.Core.Posts.Entities.Post;
 
