@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using BioEngine.BRC.Api.Components;
 using BioEngine.Core.API;
-using BioEngine.Core.DB;
-using BioEngine.Core.Search;
 using BioEngine.Core.Web;
 using BioEngine.Extra.IPB.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -66,28 +62,6 @@ namespace BioEngine.BRC.Api
                 // UI strings that we have localized.
                 SupportedUICultures = supportedCultures
             });
-
-            using (var scope = app.ApplicationServices.CreateScope())
-            {
-                if (env.IsProduction())
-                {
-                    var dbContext = scope.ServiceProvider.GetRequiredService<BioContext>();
-                    if (dbContext.Database.GetPendingMigrations().Any())
-                    {
-                        dbContext.Database.Migrate();
-                    }
-                }
-
-
-                var searchProviders = scope.ServiceProvider.GetServices<ISearchProvider>();
-                if (searchProviders != null)
-                {
-                    foreach (var searchProvider in searchProviders)
-                    {
-                        searchProvider.InitAsync().GetAwaiter().GetResult();
-                    }
-                }
-            }
         }
 
         protected override void ConfigureAfterRouting(IApplicationBuilder app, IHostEnvironment env)

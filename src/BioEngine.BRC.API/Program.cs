@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading.Tasks;
 using BioEngine.BRC.Common;
 using BioEngine.Core.API;
 using BioEngine.Core.Logging.Loki;
@@ -9,22 +10,23 @@ using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB;
 using BioEngine.Extra.Twitter;
 using JetBrains.Annotations;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 
 namespace BioEngine.BRC.Api
 {
     [UsedImplicitly]
     public static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
-            CreateHostBuilder(args).Build().Run();
+            var bioEngine = CreateBioEngine(args);
+
+            await bioEngine.RunAsync<Startup>();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            new Core.BioEngine(args)
+        private static Core.BioEngine CreateBioEngine(string[] args)
+        {
+            return new Core.BioEngine(args)
                 .AddPostgresDb()
                 .AddBrcDomain()
                 .AddElasticSearch()
@@ -58,11 +60,7 @@ namespace BioEngine.BRC.Api
                 .AddModule<IPBAuthModule>()
                 .AddModule<TwitterModule>()
                 .AddModule<FacebookModule>()
-                .AddModule<AdsModule>()
-                .GetHostBuilder()
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .AddModule<AdsModule>();
+        }
     }
 }
