@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UserSecretsId>bw</UserSecretsId>
-    <LangVersion>preview</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BioEngine.Core.API" Version="3.0.*" Condition="!Exists('..\..\..\BioEngine.Core.API')" />
