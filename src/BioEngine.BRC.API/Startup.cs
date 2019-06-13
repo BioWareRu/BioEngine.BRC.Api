@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Globalization;
 using BioEngine.BRC.Api.Components;
+using BioEngine.BRC.Common;
 using BioEngine.Core.API;
 using BioEngine.Core.Web;
 using BioEngine.Extra.IPB.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -68,6 +70,12 @@ namespace BioEngine.BRC.Api
         {
             base.ConfigureAfterRouting(app, env);
             app.UseCors("allorigins");
+        }
+
+        protected override void ConfigureEndpoints(IApplicationBuilder app, IHostEnvironment env, IEndpointRouteBuilder endpoints)
+        {
+            endpoints.AddBrcRoutes();
+            base.ConfigureEndpoints(app, env, endpoints);
         }
     }
 
