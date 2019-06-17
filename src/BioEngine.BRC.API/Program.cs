@@ -3,7 +3,6 @@ using System.Text;
 using System.Threading.Tasks;
 using BioEngine.BRC.Common;
 using BioEngine.Core.API;
-using BioEngine.Core.Logging.Loki;
 using BioEngine.Core.Seo;
 using BioEngine.Extra.Ads;
 using BioEngine.Extra.Facebook;
@@ -31,8 +30,7 @@ namespace BioEngine.BRC.Api
                 .AddBrcDomain()
                 .AddElasticSearch()
                 .AddModule<ApiModule>()
-                .AddModule<LokiLoggingModule, LokiLoggingConfig>((configuration, environment) =>
-                    new LokiLoggingConfig(configuration["BRC_LOKI_URL"]))
+                .AddLogging()
                 .AddS3Storage()
                 .AddModule<SeoModule>()
                 .AddModule<IPBApiModule, IPBModuleConfig>((configuration, env) =>
