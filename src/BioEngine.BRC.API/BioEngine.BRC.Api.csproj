@@ -6,16 +6,16 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BioEngine.Core.API" Version="3.0.*" Condition="!Exists('..\..\..\BioEngine.Core.API')" />
-    <PackageReference Include="BioEngine.Core.Seo" Version="3.0.*" Condition="!Exists('..\..\..\BioEngine.Core')" />
+    <PackageReference Include="BioEngine.Core.API" Version="3.0.*" Condition="!Exists('..\..\..\..\BioEngine\BioEngine.Core.API')" />
+    <PackageReference Include="BioEngine.Core.Seo" Version="3.0.*" Condition="!Exists('..\..\..\..\BioEngine\BioEngine.Core')" />
     <PackageReference Include="BioEngine.BRC.Common" Version="3.0.*" Condition="!Exists('..\..\..\BioEngine.BRC.Common')" />
     <PackageReference Include="BioEngine.BRC.Migrations" Version="3.0.*" Condition="!Exists('..\..\..\BioEngine.BRC.Common')" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BioEngine.Core.API\src\BioEngine.Core.API\BioEngine.Core.API.csproj" Condition="Exists('..\..\..\BioEngine.Core.API')" />
+    <ProjectReference Include="..\..\..\..\BioEngine\BioEngine.Core.API\src\BioEngine.Core.API\BioEngine.Core.API.csproj" Condition="Exists('..\..\..\..\BioEngine\BioEngine.Core.API')" />
     <ProjectReference Include="..\..\..\BioEngine.BRC.Common\src\BioEngine.BRC.Common\BioEngine.BRC.Common.csproj" Condition="Exists('..\..\..\BioEngine.BRC.Common')" />
     <ProjectReference Include="..\..\..\BioEngine.BRC.Common\src\BioEngine.BRC.Migrations\BioEngine.BRC.Migrations.csproj" Condition="Exists('..\..\..\BioEngine.BRC.Common')" />
-    <ProjectReference Include="..\..\..\BioEngine.Core\src\BioEngine.Core.Seo\BioEngine.Core.Seo.csproj" Condition="Exists('..\..\..\BioEngine.Core')" />
+    <ProjectReference Include="..\..\..\..\BioEngine\BioEngine.Core\src\BioEngine.Core.Seo\BioEngine.Core.Seo.csproj" Condition="Exists('..\..\..\..\BioEngine\BioEngine.Core')" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities" />
