@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 using BioEngine.BRC.Common;
@@ -9,6 +9,8 @@ using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB;
 using BioEngine.Extra.Twitter;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace BioEngine.BRC.Api
 {
@@ -23,6 +25,15 @@ namespace BioEngine.BRC.Api
             await bioEngine.RunAsync<Startup>();
         }
 
+        // need for migrations
+        [UsedImplicitly]
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            CreateBioEngine(args).GetHostBuilder().ConfigureAppConfiguration(builder =>
+            {
+                builder.AddUserSecrets<Startup>();
+                builder.AddEnvironmentVariables();
+            });
+        
         private static Core.BioEngine CreateBioEngine(string[] args)
         {
             return new Core.BioEngine(args)
