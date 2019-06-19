@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
 using BioEngine.BRC.Common;
 using BioEngine.Core.API;
 using BioEngine.Core.Seo;
 using BioEngine.Extra.Ads;
+using BioEngine.Extra.ContentTemplates;
 using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB;
 using BioEngine.Extra.Twitter;
@@ -44,6 +45,7 @@ namespace BioEngine.BRC.Api
                 .AddLogging()
                 .AddS3Storage()
                 .AddModule<SeoModule>()
+                .AddModule<ContentItemTemplatesModule>()
                 .AddModule<IPBApiModule, IPBModuleConfig>((configuration, env) =>
                 {
                     bool.TryParse(configuration["BE_IPB_API_DEV_MODE"] ?? "", out var devMode);

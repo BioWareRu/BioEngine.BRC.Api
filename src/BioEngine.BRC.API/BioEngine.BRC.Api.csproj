@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="BioEngine.Core.API" Version="3.0.*" Condition="!Exists('..\..\..\..\BioEngine\BioEngine.Core.API')" />
     <PackageReference Include="BioEngine.Core.Seo" Version="3.0.*" Condition="!Exists('..\..\..\..\BioEngine\BioEngine.Core')" />
+    <PackageReference Include="BioEngine.Extra.ContentItemsTemplates" Version="3.0.*" Condition="!Exists('..\..\..\..\BioEngine\BioEngine.Extra.ContentTemplates')" />
     <PackageReference Include="BioEngine.BRC.Common" Version="3.0.*" Condition="!Exists('..\..\..\BioEngine.BRC.Common')" />
     <PackageReference Include="BioEngine.BRC.Migrations" Version="3.0.*" Condition="!Exists('..\..\..\BioEngine.BRC.Common')" />
   </ItemGroup>
@@ -16,6 +17,7 @@
     <ProjectReference Include="..\..\..\BioEngine.BRC.Common\src\BioEngine.BRC.Common\BioEngine.BRC.Common.csproj" Condition="Exists('..\..\..\BioEngine.BRC.Common')" />
     <ProjectReference Include="..\..\..\BioEngine.BRC.Common\src\BioEngine.BRC.Migrations\BioEngine.BRC.Migrations.csproj" Condition="Exists('..\..\..\BioEngine.BRC.Common')" />
     <ProjectReference Include="..\..\..\..\BioEngine\BioEngine.Core\src\BioEngine.Core.Seo\BioEngine.Core.Seo.csproj" Condition="Exists('..\..\..\..\BioEngine\BioEngine.Core')" />
+    <ProjectReference Include="..\..\..\..\BioEngine\BioEngine.Extra.ContentTemplates\src\BioEngine.Extra.ContentTemplates\BioEngine.Extra.ContentTemplates.csproj" Condition="Exists('..\..\..\..\BioEngine\BioEngine.Extra.ContentTemplates')" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities" />
