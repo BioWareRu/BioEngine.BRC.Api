@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="BioEngine.Core.API" Version="3.0.*" Condition="!Exists('..\..\..\..\BioEngine\BioEngine.Core.API')" />
     <PackageReference Include="BioEngine.Core.Seo" Version="3.0.*" Condition="!Exists('..\..\..\..\BioEngine\BioEngine.Core')" />
-    <PackageReference Include="BioEngine.Extra.ContentItemsTemplates" Version="3.0.*" Condition="!Exists('..\..\..\..\BioEngine\BioEngine.Extra.ContentTemplates')" />
+    <PackageReference Include="BioEngine.Extra.ContentTemplates" Version="3.0.*" Condition="!Exists('..\..\..\..\BioEngine\BioEngine.Extra.ContentTemplates')" />
     <PackageReference Include="BioEngine.BRC.Common" Version="3.0.*" Condition="!Exists('..\..\..\BioEngine.BRC.Common')" />
     <PackageReference Include="BioEngine.BRC.Migrations" Version="3.0.*" Condition="!Exists('..\..\..\BioEngine.BRC.Common')" />
   </ItemGroup>
