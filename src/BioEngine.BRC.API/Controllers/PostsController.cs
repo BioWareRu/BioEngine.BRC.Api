@@ -79,5 +79,20 @@ namespace BioEngine.BRC.Api.Controllers
 
             return Ok(template);
         }
+
+        [HttpDelete("templates/{templateId}")]
+        public async Task<ActionResult<ContentItemTemplate>> DeleteTemplatesAsync(Guid templateId)
+        {
+            var template = await _templatesRepository.GetByIdAsync(templateId);
+            if (template == null)
+            {
+                return new ObjectResult(new RestResponse(StatusCodes.Status404NotFound,
+                    new[] {new RestErrorResponse("Not Found")})) {StatusCode = StatusCodes.Status404NotFound};
+            }
+
+            await _templatesRepository.DeleteAsync(template);
+
+            return Ok(template);
+        }
     }
 }
