@@ -58,5 +58,5 @@ stages:
                       repository: 'biowareru/bioengine-brc-api'
                       command: 'buildAndPush'
                       Dockerfile: 'src/BioEngine.BRC.API/Dockerfile'
-                      buildContext: './publish'
+                      buildContext: '$(Pipeline.Workspace)/publish'
                       tags: '$(Version)'
