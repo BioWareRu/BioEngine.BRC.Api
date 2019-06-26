@@ -2,19 +2,19 @@ using System;
 using System.Threading.Tasks;
 using BioEngine.BRC.Api.Components;
 using BioEngine.Core.Abstractions;
-using BioEngine.Core.API.Response;
+using BioEngine.Core.Api.Response;
 using BioEngine.Core.DB;
-using BioEngine.Posts.Api;
-using BioEngine.Posts.Api.Entities;
-using BioEngine.Posts.Db;
+using BioEngine.Core.Posts.Api;
+using BioEngine.Core.Posts.Api.Entities;
+using BioEngine.Core.Posts.Db;
 using BioEngine.Core.Repository;
 using BioEngine.Core.Web;
 using BioEngine.Extra.ContentTemplates.Db;
 using BioEngine.Extra.ContentTemplates.Entities;
-using BioEngine.Posts.Entities;
+using BioEngine.Core.Posts.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Post = BioEngine.Posts.Entities.Post;
+using Post = BioEngine.Core.Posts.Entities.Post;
 
 namespace BioEngine.BRC.Api.Controllers
 {
@@ -54,7 +54,7 @@ namespace BioEngine.BRC.Api.Controllers
         }
 
         [HttpGet("new/template/{templateId}")]
-        public async Task<ActionResult<Posts.Api.Entities.Post>> CreateFromTemplateAsync(Guid templateId)
+        public async Task<ActionResult<Core.Posts.Api.Entities.Post>> CreateFromTemplateAsync(Guid templateId)
         {
             var content = await _templatesRepository.CreateFromTemplateAsync<Post, PostData>(templateId);
             if (content == null)

@@ -1,7 +1,7 @@
 ﻿using BioEngine.BRC.Api.Entities.Request;
 using BioEngine.BRC.Domain.Entities;
 using BioEngine.BRC.Domain.Repository;
-using BioEngine.Core.API;
+using BioEngine.Core.Api;
 using BioEngine.Core.DB;
 using BioEngine.Core.Repository;
 using BioEngine.Core.Web;

@@ -1,5 +1,5 @@
 ﻿using BioEngine.BRC.Domain.Entities;
-using BioEngine.Core.API.Models;
+using BioEngine.Core.Api.Models;
 using BioEngine.Core.Repository;
 using Microsoft.AspNetCore.Routing;
 

@@ -2,7 +2,9 @@
 using System.Text;
 using System.Threading.Tasks;
 using BioEngine.BRC.Common;
-using BioEngine.Core.API;
+using BioEngine.Core.Api;
+using BioEngine.Core.Pages.Api;
+using BioEngine.Core.Posts.Api;
 using BioEngine.Core.Seo;
 using BioEngine.Extra.Ads;
 using BioEngine.Extra.ContentTemplates;
@@ -34,19 +36,21 @@ namespace BioEngine.BRC.Api
                 builder.AddUserSecrets<Startup>();
                 builder.AddEnvironmentVariables();
             });
-        
+
         private static Core.BioEngine CreateBioEngine(string[] args)
         {
             return new Core.BioEngine(args)
                 .AddPostgresDb()
                 .AddBrcDomain()
+                .AddModule<PostsApiModule>()
+                .AddModule<PagesApiModule>()
                 .AddElasticSearch()
                 .AddModule<ApiModule>()
                 .AddLogging()
                 .AddS3Storage()
                 .AddModule<SeoModule>()
                 .AddModule<ContentItemTemplatesModule>()
-                .AddModule<IPBApiModule, IPBModuleConfig>((configuration, env) =>
+                .AddModule<IPBApiModule, IPBApiModuleConfig>((configuration, env) =>
                 {
                     bool.TryParse(configuration["BE_IPB_API_DEV_MODE"] ?? "", out var devMode);
                     int.TryParse(configuration["BE_IPB_API_ADMIN_GROUP_ID"], out var adminGroupId);
@@ -57,7 +61,7 @@ namespace BioEngine.BRC.Api
                         throw new ArgumentException($"Can't parse IPB url; {configuration["BE_IPB_URL"]}");
                     }
 
-                    return new IPBModuleConfig(ipbUrl)
+                    return new IPBApiModuleConfig(ipbUrl)
                     {
                         DevMode = devMode,
                         AdminGroupId = adminGroupId,
@@ -65,10 +69,10 @@ namespace BioEngine.BRC.Api
                         EditorGroupId = editorGroupId,
                         ApiClientId = configuration["BE_IPB_API_CLIENT_ID"],
                         ApiReadonlyKey = configuration["BE_IPB_API_READONLY_KEY"],
-                        IntegrationKey = configuration["BE_IPB_INTEGRATION_KEY"]
+                        IntegrationKey = configuration["BE_IPB_INTEGRATION_KEY"],
+                        EnableAuth = true
                     };
                 })
-                .AddModule<IPBAuthModule>()
                 .AddModule<TwitterModule>()
                 .AddModule<FacebookModule>()
                 .AddModule<AdsModule>();
