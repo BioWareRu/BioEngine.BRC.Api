@@ -1,0 +1,14 @@
+﻿using BioEngine.BRC.Domain.Entities;
+using BioEngine.Core.API.Models;
+using BioEngine.Core.Repository;
+using Microsoft.AspNetCore.Routing;
+
+namespace BioEngine.BRC.Api.Entities.Request
+{
+    public class GameRequestItem : SectionRestModel<Game, GameData>
+    {
+        public GameRequestItem(LinkGenerator linkGenerator, SitesRepository sitesRepository) : base(linkGenerator, sitesRepository)
+        {
+        }
+    }
+}

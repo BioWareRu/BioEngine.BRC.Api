@@ -1,0 +1,6 @@
+@model BioEngine.Core.Web.Models.BlockViewModel<BioEngine.Core.Entities.Blocks.YoutubeBlock, BioEngine.Core.Entities.Blocks.YoutubeBlockData>
+
+<p style="text-align:center">
+    @* ReSharper disable once Html.Obsolete *@
+    <iframe frameborder="0" height="315" src="https://www.youtube.com/embed/@Model.Block.Data.YoutubeId" width="560"></iframe>
+</p>

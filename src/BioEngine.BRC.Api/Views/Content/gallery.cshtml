@@ -1,0 +1,10 @@
+@model BioEngine.Core.Web.Models.BlockViewModel<BioEngine.Core.Entities.Blocks.GalleryBlock, BioEngine.Core.Entities.Blocks.GalleryBlockData>
+
+@foreach (var picture in Model.Block.Data.Pictures)
+{
+    <div class="gallery-pic">
+        <a href="@picture.PublicUri" target="_blank">
+            <img src="@picture.PictureInfo.MediumThumbnail.PublicUri" alt="@picture.FileName"/>
+        </a>
+    </div>
+}
