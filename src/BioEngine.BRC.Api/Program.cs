@@ -69,7 +69,6 @@ namespace BioEngine.BRC.Api
                         EditorGroupId = editorGroupId,
                         ApiClientId = configuration["BE_IPB_API_CLIENT_ID"],
                         ApiReadonlyKey = configuration["BE_IPB_API_READONLY_KEY"],
-                        IntegrationKey = configuration["BE_IPB_INTEGRATION_KEY"],
                         EnableAuth = true
                     };
                 })
