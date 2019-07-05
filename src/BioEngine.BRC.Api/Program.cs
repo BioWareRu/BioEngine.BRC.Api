@@ -6,7 +6,6 @@ using BioEngine.Core.Api;
 using BioEngine.Core.Pages.Api;
 using BioEngine.Core.Posts.Api;
 using BioEngine.Core.Seo;
-using BioEngine.Extra.Ads;
 using BioEngine.Extra.Ads.Api;
 using BioEngine.Extra.ContentTemplates;
 using BioEngine.Extra.Facebook;
