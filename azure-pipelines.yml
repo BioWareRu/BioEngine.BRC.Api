@@ -28,12 +28,9 @@ stages:
                   displayName: 'Publish project'
                   inputs:
                       command: custom
-                      custom: publish
-                      publishWebProjects: false
-                      zipAfterPublish: false
-                      modifyOutputPath: false
-                      arguments: '--no-restore -c Release --output ./publish'
-                      projects: '**/*.csproj'
+                      custom: 'pack'
+                      projects: src/**/*.csproj
+                      arguments: '--no-restore  /p:Configuration=Release /p:PackageVersion=$(Version) --output $(Build.ArtifactStagingDirectory)'
                       
                 - task: PublishPipelineArtifact@0
                   displayName: 'Publish app as artifact'
