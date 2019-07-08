@@ -61,7 +61,7 @@ namespace BioEngine.BRC.Api.Components
                     if (ipbSettings != null && ipbSettings.ForumId > 0)
                     {
                         await _ipbContentPublisher.PublishAsync(contentItem, site,
-                            new IPBPublishConfig(ipbSettings.ForumId, currentUserToken));
+                            new IPBPublishConfig(ipbSettings.ForumId, currentUserToken), true);
                     }
                 }
 
@@ -103,7 +103,7 @@ namespace BioEngine.BRC.Api.Components
 
                     if (contentItem.IsPublished)
                     {
-                        await _twitterContentPublisher.PublishAsync(contentItem, site, twitterConfig);
+                        await _twitterContentPublisher.PublishAsync(contentItem, site, twitterConfig, hasChanges);
                     }
                 }
 
@@ -122,7 +122,7 @@ namespace BioEngine.BRC.Api.Components
 
                     if (contentItem.IsPublished)
                     {
-                        await _facebookContentPublisher.PublishAsync(contentItem, site, facebookConfig);
+                        await _facebookContentPublisher.PublishAsync(contentItem, site, facebookConfig, hasChanges);
                     }
                 }
             }
