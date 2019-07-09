@@ -37,13 +37,13 @@ namespace BioEngine.BRC.Api.Controllers
             PostRequestItem request = null)
         {
             await base.AfterSaveAsync(domainModel, changes, request);
-            await _publisher.PublishOrDeleteAsync(await CurrentToken, domainModel, changes);
+            await _publisher.PublishOrDeleteAsync(domainModel, changes);
         }
 
         protected override async Task AfterDeleteAsync(Post domainModel)
         {
             await base.AfterDeleteAsync(domainModel);
-            await _publisher.DeleteAsync(await CurrentToken, domainModel);
+            await _publisher.DeleteAsync(domainModel);
         }
 
         [HttpGet("templates")]

@@ -49,7 +49,7 @@ namespace BioEngine.BRC.Api.Components
         }
 
 
-        public async Task PublishOrDeleteAsync(string currentUserToken, ContentItem contentItem,
+        public async Task PublishOrDeleteAsync(ContentItem contentItem,
             PropertyChange[] changes)
         {
             var sites = await _sitesRepository.GetByIdsAsync(contentItem.SiteIds);
@@ -61,7 +61,7 @@ namespace BioEngine.BRC.Api.Components
                     if (ipbSettings != null && ipbSettings.ForumId > 0)
                     {
                         await _ipbContentPublisher.PublishAsync(contentItem, site,
-                            new IPBPublishConfig(ipbSettings.ForumId, currentUserToken), true);
+                            new IPBPublishConfig(ipbSettings.ForumId), true);
                     }
                 }
 
@@ -128,7 +128,7 @@ namespace BioEngine.BRC.Api.Components
             }
         }
 
-        public async Task DeleteAsync(string currentUserToken, ContentItem contentItem)
+        public async Task DeleteAsync(ContentItem contentItem)
         {
             var sites = await _sitesRepository.GetByIdsAsync(contentItem.SiteIds);
             foreach (var site in sites)
@@ -139,7 +139,7 @@ namespace BioEngine.BRC.Api.Components
                     if (ipbSettings != null && ipbSettings.ForumId > 0)
                     {
                         await _ipbContentPublisher.DeleteAsync(contentItem,
-                            new IPBPublishConfig(ipbSettings.ForumId, currentUserToken), site);
+                            new IPBPublishConfig(ipbSettings.ForumId), site);
                     }
                 }
 
