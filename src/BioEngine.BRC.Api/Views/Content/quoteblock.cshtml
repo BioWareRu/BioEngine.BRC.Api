@@ -1,10 +1,10 @@
 @model BioEngine.Core.Web.Models.BlockViewModel<BioEngine.Core.Entities.Blocks.QuoteBlock, BioEngine.Core.Entities.Blocks.QuoteBlockData>
 
 <blockquote>
-    <div>
+    <div style="font-style: italic">
         @Html.Raw(Model.Block.Data.Text)
     </div>
-    <div class="author">
+    <div style="text-align: right">
         @if (!string.IsNullOrEmpty(Model.Block.Data.Link))
         {
             if (!string.IsNullOrEmpty(Model.Block.Data.Author))
