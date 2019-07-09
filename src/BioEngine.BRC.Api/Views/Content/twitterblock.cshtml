@@ -4,9 +4,15 @@
     var url = $"https://twitter.com/{Model.Block.Data.TweetAuthor}/status/{Model.Block.Data.TweetId}";
 }
 
-<p style="text-align:center">
-    @* ReSharper disable once Html.Obsolete *@
-    <iframe border=0 frameborder="0" height="250" width="550"
-            src="https://twitframe.com/show?url=@Html.Encode(url)">
+<div class="ipsEmbeddedOther" contenteditable="false" style="text-align:center">
+    <iframe
+        allowfullscreen=""
+        class="ipsEmbed_finishedLoading"
+        data-controller="core.front.core.autosizeiframe"
+        data-embedid="embed1381308139"
+        scrolling="no"
+        src="/index.php?app=core&amp;module=system&amp;controller=embed&amp;url=@url"
+        style="overflow: hidden;">
+
     </iframe>
-</p>
+</div>
