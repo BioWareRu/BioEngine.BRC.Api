@@ -2,6 +2,7 @@
 
 @{
     var url = $"https://twitter.com/{Model.Block.Data.TweetAuthor}/status/{Model.Block.Data.TweetId}";
+    var embedId = "embed" + Model.Block.Data.TweetId;
 }
 
 <div class="ipsEmbeddedOther" contenteditable="false" style="text-align:center">
@@ -9,7 +10,7 @@
         allowfullscreen=""
         class="ipsEmbed_finishedLoading"
         data-controller="core.front.core.autosizeiframe"
-        data-embedid="embed1381308139"
+        data-embedid="@embedId"
         scrolling="no"
         src="/index.php?app=core&amp;module=system&amp;controller=embed&amp;url=@url"
         style="overflow: hidden;">
