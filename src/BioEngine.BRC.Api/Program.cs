@@ -85,6 +85,7 @@ namespace BioEngine.BRC.Api
                         AdditionalGroupIds = additionalGroupIds.Distinct().ToArray(),
                         ApiClientId = configuration["BE_IPB_API_CLIENT_ID"],
                         ApiReadonlyKey = configuration["BE_IPB_API_READONLY_KEY"],
+                        ApiPublishKey = configuration["BE_IPB_API_PUBLISH_KEY"],
                     };
 
                     var adminPolicy = new AuthorizationPolicyBuilder().RequireClaim(ClaimTypes.Role, "admin").Build();
