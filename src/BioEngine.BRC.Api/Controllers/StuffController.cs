@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -70,6 +71,24 @@ namespace BioEngine.BRC.Api.Controllers
         {
             var posts = await _postsRepository.GetAllAsync();
             return _linkGenerator.GeneratePublicUrl(posts.items.First());
+        }
+
+        [HttpGet("files.html")]
+        public async Task<List<string>> ListFilesAsync()
+        {
+            var files = await _storageItemsRepository.GetAllAsync();
+            var list = new List<string>();
+            foreach (var file in files.items)
+            {
+                list.Add(file.FilePath);
+                if (file.PictureInfo != null)
+                {
+                    list.Add(file.PictureInfo.SmallThumbnail.FilePath);
+                    list.Add(file.PictureInfo.MediumThumbnail.FilePath);
+                }
+            }
+
+            return list;
         }
     }
 }
