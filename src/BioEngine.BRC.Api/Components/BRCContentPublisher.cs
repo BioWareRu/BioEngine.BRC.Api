@@ -58,7 +58,7 @@ namespace BioEngine.BRC.Api.Components
                 if (site.Id == GetMainSiteId(contentItem))
                 {
                     var ipbSettings = await _propertiesProvider.GetAsync<IPBSitePropertiesSet>(site);
-                    if (ipbSettings != null && ipbSettings.ForumId > 0)
+                    if (ipbSettings != null && ipbSettings.IsEnabled && ipbSettings.ForumId > 0)
                     {
                         await _ipbContentPublisher.PublishAsync(contentItem, site,
                             new IPBPublishConfig(ipbSettings.ForumId), true);
@@ -136,7 +136,7 @@ namespace BioEngine.BRC.Api.Components
                 if (site.Id == GetMainSiteId(contentItem))
                 {
                     var ipbSettings = await _propertiesProvider.GetAsync<IPBSitePropertiesSet>(site);
-                    if (ipbSettings != null && ipbSettings.ForumId > 0)
+                    if (ipbSettings != null && ipbSettings.IsEnabled && ipbSettings.ForumId > 0)
                     {
                         await _ipbContentPublisher.DeleteAsync(contentItem,
                             new IPBPublishConfig(ipbSettings.ForumId), site);
