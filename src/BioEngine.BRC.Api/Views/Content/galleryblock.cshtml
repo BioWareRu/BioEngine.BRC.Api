@@ -2,9 +2,9 @@
 
 @foreach (var picture in Model.Block.Data.Pictures)
 {
-    <div class="gallery-pic">
-        <a href="@picture.PublicUri" target="_blank">
-            <img src="@picture.PictureInfo.MediumThumbnail.PublicUri" alt="@picture.FileName"/>
+    <p>
+        <a class="ipsAttachLink ipsAttachLink_image" href="@picture.PublicUri" data-ipslightbox="" data-ipslightbox-group="@Model.Block.Id">
+            <img class="ipsImage ipsImage_thumbnailed" data-fileid="@picture.Id" src="@picture.PictureInfo.MediumThumbnail.PublicUri" alt="@picture.FileName"/>
         </a>
-    </div>
+    </p>
 }
