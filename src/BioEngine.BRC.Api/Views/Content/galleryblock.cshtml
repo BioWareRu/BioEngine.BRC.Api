@@ -1,10 +1,10 @@
 @model BioEngine.Core.Web.Models.BlockViewModel<BioEngine.Core.Entities.Blocks.GalleryBlock, BioEngine.Core.Entities.Blocks.GalleryBlockData>
 
-@foreach (var picture in Model.Block.Data.Pictures)
-{
-    <p>
+<p style="text-align: center">
+    @foreach (var picture in Model.Block.Data.Pictures)
+    {
         <a class="ipsAttachLink ipsAttachLink_image" href="@picture.PublicUri" data-ipslightbox="" data-ipslightbox-group="@Model.Block.Id">
             <img class="ipsImage ipsImage_thumbnailed" data-fileid="@picture.Id" src="@picture.PictureInfo.MediumThumbnail.PublicUri" alt="@picture.FileName"/>
         </a>
-    </p>
-}
+    }
+</p>
