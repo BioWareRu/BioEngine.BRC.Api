@@ -60,7 +60,7 @@ namespace BioEngine.BRC.Api.Components
                     var ipbSettings = await _propertiesProvider.GetAsync<IPBSitePropertiesSet>(site);
                     if (ipbSettings != null && ipbSettings.IsEnabled && ipbSettings.ForumId > 0)
                     {
-                        await _ipbContentPublisher.PublishAsync(contentItem, site,
+                        await _ipbContentPublisher.PublishAsync(contentItem,
                             new IPBPublishConfig(ipbSettings.ForumId), true);
                     }
                 }
@@ -103,7 +103,7 @@ namespace BioEngine.BRC.Api.Components
 
                     if (contentItem.IsPublished)
                     {
-                        await _twitterContentPublisher.PublishAsync(contentItem, site, twitterConfig, hasChanges);
+                        await _twitterContentPublisher.PublishAsync(contentItem, twitterConfig, hasChanges, site);
                     }
                 }
 
@@ -122,7 +122,7 @@ namespace BioEngine.BRC.Api.Components
 
                     if (contentItem.IsPublished)
                     {
-                        await _facebookContentPublisher.PublishAsync(contentItem, site, facebookConfig, hasChanges);
+                        await _facebookContentPublisher.PublishAsync(contentItem, facebookConfig, hasChanges, site);
                     }
                 }
             }
