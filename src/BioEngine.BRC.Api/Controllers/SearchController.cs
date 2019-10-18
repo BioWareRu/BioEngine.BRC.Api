@@ -63,7 +63,7 @@ namespace BioEngine.BRC.Api.Controllers
         [HttpGet("reindex/posts")]
         public Task<bool> ReindexPostsAsync()
         {
-            return ReindexAsync<Post>();
+            return ReindexAsync<Post<string>>();
         }
 
         [HttpGet("reindex/pages")]

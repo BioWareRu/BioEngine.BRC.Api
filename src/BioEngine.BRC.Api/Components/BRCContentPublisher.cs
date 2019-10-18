@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BioEngine.BRC.Domain.Entities;
-using BioEngine.Core.Entities;
+using BioEngine.Core.Abstractions;
 using BioEngine.Core.Properties;
 using BioEngine.Core.Repository;
+using BioEngine.Core.Users;
 using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB.Properties;
 using BioEngine.Extra.IPB.Publishing;
@@ -24,13 +25,15 @@ namespace BioEngine.BRC.Api.Components
         private readonly SitesRepository _sitesRepository;
         private readonly SectionsRepository _sectionsRepository;
         private readonly PropertiesProvider _propertiesProvider;
+        private readonly ICurrentUserProvider<string> _currentUserProvider;
         private readonly BrcApiOptions _options;
 
         public BRCContentPublisher(IPBContentPublisher ipbContentPublisher,
             TwitterContentPublisher twitterContentPublisher,
             FacebookContentPublisher facebookContentPublisher, SitesRepository sitesRepository,
             SectionsRepository sectionsRepository,
-            PropertiesProvider propertiesProvider, IOptions<BrcApiOptions> options)
+            PropertiesProvider propertiesProvider, IOptions<BrcApiOptions> options,
+            ICurrentUserProvider<string> currentUserProvider)
         {
             _ipbContentPublisher = ipbContentPublisher;
             _twitterContentPublisher = twitterContentPublisher;
@@ -38,10 +41,11 @@ namespace BioEngine.BRC.Api.Components
             _sitesRepository = sitesRepository;
             _sectionsRepository = sectionsRepository;
             _propertiesProvider = propertiesProvider;
+            _currentUserProvider = currentUserProvider;
             _options = options.Value;
         }
 
-        private Guid GetMainSiteId(ContentItem contentItem)
+        private Guid GetMainSiteId(IContentItem contentItem)
         {
             return contentItem.SiteIds.Contains(_options.DefaultMainSiteId)
                 ? _options.DefaultMainSiteId
@@ -49,7 +53,7 @@ namespace BioEngine.BRC.Api.Components
         }
 
 
-        public async Task PublishOrDeleteAsync(ContentItem contentItem,
+        public async Task PublishOrDeleteAsync(IContentItem contentItem,
             PropertyChange[] changes)
         {
             var sites = await _sitesRepository.GetByIdsAsync(contentItem.SiteIds);
@@ -61,7 +65,7 @@ namespace BioEngine.BRC.Api.Components
                     if (ipbSettings != null && ipbSettings.IsEnabled && ipbSettings.ForumId > 0)
                     {
                         await _ipbContentPublisher.PublishAsync(contentItem,
-                            new IPBPublishConfig(ipbSettings.ForumId), true);
+                            new IPBPublishConfig(ipbSettings.ForumId, _currentUserProvider.CurrentUser.Id), true);
                     }
                 }
 
@@ -128,7 +132,7 @@ namespace BioEngine.BRC.Api.Components
             }
         }
 
-        public async Task DeleteAsync(ContentItem contentItem)
+        public async Task DeleteAsync(IContentItem contentItem)
         {
             var sites = await _sitesRepository.GetByIdsAsync(contentItem.SiteIds);
             foreach (var site in sites)
@@ -139,7 +143,7 @@ namespace BioEngine.BRC.Api.Components
                     if (ipbSettings != null && ipbSettings.IsEnabled && ipbSettings.ForumId > 0)
                     {
                         await _ipbContentPublisher.DeleteAsync(contentItem,
-                            new IPBPublishConfig(ipbSettings.ForumId), site);
+                            new IPBPublishConfig(ipbSettings.ForumId, _currentUserProvider.CurrentUser.Id), site);
                     }
                 }
 

@@ -1,4 +1,3 @@
-using BioEngine.Core.DB;
 using BioEngine.Core.Repository;
 using BioEngine.Core.Web;
 using BioEngine.Core.Pages.Api;
@@ -9,8 +8,8 @@ namespace BioEngine.BRC.Api.Controllers
 {
     public class PagesController : ApiPagesController
     {
-        public PagesController(BaseControllerContext<Page, PagesRepository> context, BioEntitiesManager entitiesManager,
-            ContentBlocksRepository blocksRepository) : base(context, entitiesManager, blocksRepository)
+        public PagesController(BaseControllerContext<Page, PagesRepository> context,
+            ContentBlocksRepository blocksRepository) : base(context, blocksRepository)
         {
         }
     }

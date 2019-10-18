@@ -1,62 +1,59 @@
 using System;
 using System.Threading.Tasks;
 using BioEngine.BRC.Api.Components;
-using BioEngine.Core.Abstractions;
 using BioEngine.Core.Api.Response;
-using BioEngine.Core.DB;
 using BioEngine.Core.Posts.Api;
 using BioEngine.Core.Posts.Api.Entities;
 using BioEngine.Core.Posts.Db;
 using BioEngine.Core.Repository;
 using BioEngine.Core.Web;
-using BioEngine.Extra.ContentTemplates.Db;
-using BioEngine.Extra.ContentTemplates.Entities;
 using BioEngine.Core.Posts.Entities;
+using BioEngine.Core.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Post = BioEngine.Core.Posts.Entities.Post;
 
 namespace BioEngine.BRC.Api.Controllers
 {
-    public class PostsController : ApiPostsController
+    public class PostsController : ApiPostsController<string>
     {
         private readonly BRCContentPublisher _publisher;
-        private readonly ContentItemTemplatesRepository _templatesRepository;
+        private readonly PostTemplatesRepository<string> _templatesRepository;
 
-        public PostsController(BaseControllerContext<Post, PostsRepository> context,
-            BioEntitiesManager entitiesManager,
-            ContentBlocksRepository blocksRepository, IUserDataProvider userDataProvider,
-            BRCContentPublisher publisher, ContentItemTemplatesRepository templatesRepository) : base(context,
-            entitiesManager, blocksRepository, userDataProvider)
+        public PostsController(BaseControllerContext<Core.Posts.Entities.Post<string>, PostsRepository<string>> context,
+            ContentBlocksRepository blocksRepository, IUserDataProvider<string> userDataProvider,
+            BRCContentPublisher publisher, PostTemplatesRepository<string> templatesRepository,
+            ICurrentUserProvider<string> currentUserProvider) : base(context,
+            blocksRepository, userDataProvider, currentUserProvider)
         {
             _publisher = publisher;
             _templatesRepository = templatesRepository;
         }
 
-        protected override async Task AfterSaveAsync(Post domainModel, PropertyChange[] changes = null,
-            PostRequestItem request = null)
+        protected override async Task AfterSaveAsync(Core.Posts.Entities.Post<string> domainModel,
+            PropertyChange[] changes = null,
+            PostRequestItem<string> request = null)
         {
             await base.AfterSaveAsync(domainModel, changes, request);
             await _publisher.PublishOrDeleteAsync(domainModel, changes);
         }
 
-        protected override async Task AfterDeleteAsync(Post domainModel)
+        protected override async Task AfterDeleteAsync(Core.Posts.Entities.Post<string> domainModel)
         {
             await base.AfterDeleteAsync(domainModel);
             await _publisher.DeleteAsync(domainModel);
         }
 
         [HttpGet("templates")]
-        public async Task<ActionResult<ListResponse<ContentItemTemplate>>> GetTemplatesAsync()
+        public async Task<ActionResult<ListResponse<PostTemplate<string>>>> GetTemplatesAsync()
         {
-            var result = await _templatesRepository.GetTemplatesAsync<Post>();
-            return Ok(new ListResponse<ContentItemTemplate>(result.items, result.itemsCount));
+            var result = await _templatesRepository.GetTemplatesAsync();
+            return Ok(new ListResponse<PostTemplate<string>>(result.items, result.itemsCount));
         }
 
         [HttpGet("new/template/{templateId}")]
-        public async Task<ActionResult<Core.Posts.Api.Entities.Post>> CreateFromTemplateAsync(Guid templateId)
+        public async Task<ActionResult<Core.Posts.Api.Entities.Post<string>>> CreateFromTemplateAsync(Guid templateId)
         {
-            var content = await _templatesRepository.CreateFromTemplateAsync<Post, PostData>(templateId);
+            var content = await _templatesRepository.CreateFromTemplateAsync(templateId);
             if (content == null)
             {
                 return NotFound();
@@ -66,7 +63,7 @@ namespace BioEngine.BRC.Api.Controllers
         }
 
         [HttpPost("templates/new/{postId}")]
-        public async Task<ActionResult<ContentItemTemplate>> CreateTemplateAsync(Guid postId)
+        public async Task<ActionResult<PostTemplate<string>>> CreateTemplateAsync(Guid postId)
         {
             var post = await Repository.GetByIdAsync(postId);
             if (post == null)
@@ -75,13 +72,13 @@ namespace BioEngine.BRC.Api.Controllers
                     new[] {new RestErrorResponse("Not Found")})) {StatusCode = StatusCodes.Status404NotFound};
             }
 
-            var template = await _templatesRepository.CreateTemplateAsync<Post, PostData>(post);
+            var template = await _templatesRepository.CreateTemplateAsync(post);
 
             return Ok(template);
         }
 
         [HttpDelete("templates/{templateId}")]
-        public async Task<ActionResult<ContentItemTemplate>> DeleteTemplatesAsync(Guid templateId)
+        public async Task<ActionResult<PostTemplate<string>>> DeleteTemplatesAsync(Guid templateId)
         {
             var template = await _templatesRepository.GetByIdAsync(templateId);
             if (template == null)

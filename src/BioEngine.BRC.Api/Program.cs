@@ -7,7 +7,6 @@ using BioEngine.Core.Pages.Api;
 using BioEngine.Core.Posts.Api;
 using BioEngine.Core.Seo;
 using BioEngine.Extra.Ads.Api;
-using BioEngine.Extra.ContentTemplates;
 using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB;
 using BioEngine.Extra.IPB.Auth;
@@ -43,14 +42,13 @@ namespace BioEngine.BRC.Api
             return new Core.BioEngine(args)
                 .AddPostgresDb()
                 .AddBrcDomain()
-                .AddModule<PostsApiModule>()
+                .AddModule<PostsApiModule<string>>()
                 .AddModule<PagesApiModule>()
                 .AddElasticSearch()
                 .AddModule<ApiModule>()
                 .AddLogging()
                 .AddS3Storage()
                 .AddModule<SeoModule>()
-                .AddModule<ContentItemTemplatesModule>()
                 .AddModule<IPBApiModule, IPBApiModuleConfig>((configuration, env) =>
                 {
                     if (!Uri.TryCreate(configuration["BE_IPB_URL"], UriKind.Absolute, out var ipbUrl))
