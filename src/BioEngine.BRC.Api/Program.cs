@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using BioEngine.BRC.Common;
 using BioEngine.Core.Api;
 using BioEngine.Core.Pages.Api;
+using BioEngine.Core.Posts;
 using BioEngine.Core.Posts.Api;
 using BioEngine.Core.Seo;
 using BioEngine.Extra.Ads.Api;
@@ -43,6 +44,7 @@ namespace BioEngine.BRC.Api
                 .AddPostgresDb()
                 .AddBrcDomain()
                 .AddModule<PostsApiModule<string>>()
+                .AddModule<PostTemplatesModule<string>>()
                 .AddModule<PagesApiModule>()
                 .AddElasticSearch()
                 .AddModule<ApiModule>()
