@@ -1,4 +1,4 @@
-﻿using BioEngine.Core.Abstractions;
+﻿using BioEngine.Core.Users;
 using BioEngine.Core.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,14 +10,18 @@ namespace BioEngine.BRC.Api.Controllers
     [Route("v1/[controller]")]
     public class UserController : BaseController
     {
-        public UserController(BaseControllerContext context) : base(context)
+        private readonly ICurrentUserProvider<string> _currentUserProvider;
+
+        public UserController(BaseControllerContext context, ICurrentUserProvider<string> currentUserProvider) :
+            base(context)
         {
+            _currentUserProvider = currentUserProvider;
         }
 
         [HttpGet("/v1/me")]
-        public ActionResult<IUser> Me()
+        public ActionResult<IUser<string>> Me()
         {
-            return Ok(CurrentUser);
+            return Ok(_currentUserProvider.CurrentUser);
         }
     }
 }

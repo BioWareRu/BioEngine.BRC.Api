@@ -19,12 +19,12 @@ namespace BioEngine.BRC.Api.Controllers
     {
         private readonly StorageItemsRepository _storageItemsRepository;
         private readonly LinkGenerator _linkGenerator;
-        private readonly PostsRepository _postsRepository;
+        private readonly PostsRepository<string> _postsRepository;
         private readonly ILogger<StuffController> _logger;
 
         public StuffController(BaseControllerContext context, StorageItemsRepository storageItemsRepository,
             LinkGenerator linkGenerator,
-            PostsRepository postsRepository,
+            PostsRepository<string> postsRepository,
             ILogger<StuffController> logger) :
             base(context)
         {

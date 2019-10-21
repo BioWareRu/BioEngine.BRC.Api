@@ -2,7 +2,6 @@
 using BioEngine.BRC.Domain.Entities;
 using BioEngine.BRC.Domain.Repository;
 using BioEngine.Core.Api;
-using BioEngine.Core.DB;
 using BioEngine.Core.Repository;
 using BioEngine.Core.Web;
 
@@ -19,8 +18,8 @@ namespace BioEngine.BRC.Api.Controllers
 
         public TopicsController(
             BaseControllerContext<Topic, TopicsRepository> context,
-            BioEntitiesManager entitiesManager, ContentBlocksRepository blocksRepository) : base(context,
-            entitiesManager, blocksRepository)
+            ContentBlocksRepository blocksRepository) : base(context,
+            blocksRepository)
         {
         }
     }
