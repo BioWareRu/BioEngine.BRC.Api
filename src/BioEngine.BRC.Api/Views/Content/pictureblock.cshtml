@@ -4,9 +4,10 @@
 @{
     var image = Model.Block.Data.Picture;
     var url = !string.IsNullOrEmpty(Model.Block.Data.Url) ? Model.Block.Data.Url : image.PublicUri.ToString();
+    var imgUrl = image.PictureInfo?.LargeThumbnail?.PublicUri ?? image.PublicUri;
 }
 <p style="text-align: center">
     <a href="@url" target="_blank">
-        <img src="@image.PublicUri" alt="@image.FileName"/>
+        <img src="@imgUrl" alt="@image.FileName"/>
     </a>
 </p>
