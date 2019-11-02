@@ -13,6 +13,7 @@ using BioEngine.Extra.IPB;
 using BioEngine.Extra.IPB.Auth;
 using BioEngine.Extra.Twitter;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
@@ -25,7 +26,13 @@ namespace BioEngine.BRC.Api
         {
             Console.OutputEncoding = Encoding.UTF8;
             var bioEngine = CreateBioEngine(args);
-
+            bioEngine.GetHostBuilder().ConfigureWebHost(builder =>
+            {
+                builder.ConfigureKestrel(options =>
+                {
+                    options.Limits.MaxRequestBodySize = 1 * 1024 * 1024 * 1024; // 1 gb
+                });
+            });
             await bioEngine.RunAsync<Startup>();
         }
 
