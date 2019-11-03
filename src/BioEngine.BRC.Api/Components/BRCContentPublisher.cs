@@ -65,7 +65,8 @@ namespace BioEngine.BRC.Api.Components
                     if (ipbSettings != null && ipbSettings.IsEnabled && ipbSettings.ForumId > 0)
                     {
                         await _ipbContentPublisher.PublishAsync(contentItem,
-                            new IPBPublishConfig(ipbSettings.ForumId, _currentUserProvider.CurrentUser.Id), true);
+                            new IPBPublishConfig(ipbSettings.ForumId, _currentUserProvider.CurrentUser.Id), true, site,
+                            true);
                     }
                 }
 
