@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using BioEngine.BRC.Domain.Entities;
 using BioEngine.Core.Abstractions;
+using BioEngine.Core.Posts.Entities;
 using BioEngine.Core.Properties;
 using BioEngine.Core.Repository;
-using BioEngine.Core.Users;
 using BioEngine.Extra.Facebook;
 using BioEngine.Extra.IPB.Properties;
 using BioEngine.Extra.IPB.Publishing;
@@ -17,7 +17,7 @@ using Microsoft.Extensions.Options;
 namespace BioEngine.BRC.Api.Components
 {
     [UsedImplicitly]
-    public class BRCContentPublisher
+    public class BRCPostsPublisher
     {
         private readonly IPBContentPublisher _ipbContentPublisher;
         private readonly TwitterContentPublisher _twitterContentPublisher;
@@ -25,15 +25,13 @@ namespace BioEngine.BRC.Api.Components
         private readonly SitesRepository _sitesRepository;
         private readonly SectionsRepository _sectionsRepository;
         private readonly PropertiesProvider _propertiesProvider;
-        private readonly ICurrentUserProvider<string> _currentUserProvider;
         private readonly BrcApiOptions _options;
 
-        public BRCContentPublisher(IPBContentPublisher ipbContentPublisher,
+        public BRCPostsPublisher(IPBContentPublisher ipbContentPublisher,
             TwitterContentPublisher twitterContentPublisher,
             FacebookContentPublisher facebookContentPublisher, SitesRepository sitesRepository,
             SectionsRepository sectionsRepository,
-            PropertiesProvider propertiesProvider, IOptions<BrcApiOptions> options,
-            ICurrentUserProvider<string> currentUserProvider)
+            PropertiesProvider propertiesProvider, IOptions<BrcApiOptions> options)
         {
             _ipbContentPublisher = ipbContentPublisher;
             _twitterContentPublisher = twitterContentPublisher;
@@ -41,7 +39,6 @@ namespace BioEngine.BRC.Api.Components
             _sitesRepository = sitesRepository;
             _sectionsRepository = sectionsRepository;
             _propertiesProvider = propertiesProvider;
-            _currentUserProvider = currentUserProvider;
             _options = options.Value;
         }
 
@@ -53,19 +50,19 @@ namespace BioEngine.BRC.Api.Components
         }
 
 
-        public async Task PublishOrDeleteAsync(IContentItem contentItem,
+        public async Task PublishOrDeleteAsync(Post<string> post,
             PropertyChange[] changes)
         {
-            var sites = await _sitesRepository.GetByIdsAsync(contentItem.SiteIds);
+            var sites = await _sitesRepository.GetByIdsAsync(post.SiteIds);
             foreach (var site in sites)
             {
-                if (site.Id == GetMainSiteId(contentItem))
+                if (site.Id == GetMainSiteId(post))
                 {
                     var ipbSettings = await _propertiesProvider.GetAsync<IPBSitePropertiesSet>(site);
                     if (ipbSettings != null && ipbSettings.IsEnabled && ipbSettings.ForumId > 0)
                     {
-                        await _ipbContentPublisher.PublishAsync(contentItem,
-                            new IPBPublishConfig(ipbSettings.ForumId, _currentUserProvider.CurrentUser.Id), true, site,
+                        await _ipbContentPublisher.PublishAsync(post,
+                            new IPBPublishConfig(ipbSettings.ForumId, post.AuthorId), true, site,
                             true);
                     }
                 }
@@ -74,9 +71,9 @@ namespace BioEngine.BRC.Api.Components
                 if (twitterSettings != null && twitterSettings.IsEnabled)
                 {
                     var hasChanges = changes != null && changes.Any(c =>
-                                         c.Name == nameof(contentItem.Title) || c.Name == nameof(contentItem.Url));
+                                         c.Name == nameof(post.Title) || c.Name == nameof(post.Url));
 
-                    var sections = await _sectionsRepository.GetByIdsAsync(contentItem.SectionIds);
+                    var sections = await _sectionsRepository.GetByIdsAsync(post.SectionIds);
                     var tags = new List<string>();
                     foreach (var section in sections)
                     {
@@ -101,57 +98,57 @@ namespace BioEngine.BRC.Api.Components
                         new TwitterConfig(twitterSettings.ConsumerKey, twitterSettings.ConsumerSecret,
                             twitterSettings.AccessToken, twitterSettings.AccessTokenSecret), tags);
 
-                    if (hasChanges || !contentItem.IsPublished)
+                    if (hasChanges || !post.IsPublished)
                     {
-                        await _twitterContentPublisher.DeleteAsync(contentItem, twitterConfig, site);
+                        await _twitterContentPublisher.DeleteAsync(post, twitterConfig, site);
                     }
 
-                    if (contentItem.IsPublished)
+                    if (post.IsPublished)
                     {
-                        await _twitterContentPublisher.PublishAsync(contentItem, twitterConfig, hasChanges, site);
+                        await _twitterContentPublisher.PublishAsync(post, twitterConfig, hasChanges, site);
                     }
                 }
 
                 var facebookSettings = await _propertiesProvider.GetAsync<FacebookSitePropertiesSet>(site);
                 if (facebookSettings != null && facebookSettings.IsEnabled)
                 {
-                    var hasChanges = changes != null && changes.Any(c => c.Name == nameof(contentItem.Url));
+                    var hasChanges = changes != null && changes.Any(c => c.Name == nameof(post.Url));
 
                     var facebookConfig = new FacebookConfig(new Uri(facebookSettings.ApiUrl), facebookSettings.PageId,
                         facebookSettings.AccessToken);
 
-                    if (hasChanges || !contentItem.IsPublished)
+                    if (hasChanges || !post.IsPublished)
                     {
-                        await _facebookContentPublisher.DeleteAsync(contentItem, facebookConfig, site);
+                        await _facebookContentPublisher.DeleteAsync(post, facebookConfig, site);
                     }
 
-                    if (contentItem.IsPublished)
+                    if (post.IsPublished)
                     {
-                        await _facebookContentPublisher.PublishAsync(contentItem, facebookConfig, hasChanges, site);
+                        await _facebookContentPublisher.PublishAsync(post, facebookConfig, hasChanges, site);
                     }
                 }
             }
         }
 
-        public async Task DeleteAsync(IContentItem contentItem)
+        public async Task DeleteAsync(Post<string> post)
         {
-            var sites = await _sitesRepository.GetByIdsAsync(contentItem.SiteIds);
+            var sites = await _sitesRepository.GetByIdsAsync(post.SiteIds);
             foreach (var site in sites)
             {
-                if (site.Id == GetMainSiteId(contentItem))
+                if (site.Id == GetMainSiteId(post))
                 {
                     var ipbSettings = await _propertiesProvider.GetAsync<IPBSitePropertiesSet>(site);
                     if (ipbSettings != null && ipbSettings.IsEnabled && ipbSettings.ForumId > 0)
                     {
-                        await _ipbContentPublisher.DeleteAsync(contentItem,
-                            new IPBPublishConfig(ipbSettings.ForumId, _currentUserProvider.CurrentUser.Id), site);
+                        await _ipbContentPublisher.DeleteAsync(post,
+                            new IPBPublishConfig(ipbSettings.ForumId, post.AuthorId), site);
                     }
                 }
 
                 var twitterSettings = await _propertiesProvider.GetAsync<TwitterSitePropertiesSet>(site);
                 if (twitterSettings != null && twitterSettings.IsEnabled)
                 {
-                    await _twitterContentPublisher.DeleteAsync(contentItem,
+                    await _twitterContentPublisher.DeleteAsync(post,
                         new TwitterPublishConfig(
                             new TwitterConfig(twitterSettings.ConsumerKey, twitterSettings.ConsumerSecret,
                                 twitterSettings.AccessToken, twitterSettings.AccessTokenSecret), new List<string>()),
@@ -161,7 +158,7 @@ namespace BioEngine.BRC.Api.Components
                 var facebookSettings = await _propertiesProvider.GetAsync<FacebookSitePropertiesSet>(site);
                 if (facebookSettings != null && facebookSettings.IsEnabled)
                 {
-                    await _facebookContentPublisher.DeleteAsync(contentItem,
+                    await _facebookContentPublisher.DeleteAsync(post,
                         new FacebookConfig(new Uri(facebookSettings.ApiUrl), facebookSettings.PageId,
                             facebookSettings.AccessToken), site);
                 }

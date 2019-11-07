@@ -16,12 +16,12 @@ namespace BioEngine.BRC.Api.Controllers
 {
     public class PostsController : ApiPostsController<string>
     {
-        private readonly BRCContentPublisher _publisher;
+        private readonly BRCPostsPublisher _publisher;
         private readonly PostTemplatesRepository<string> _templatesRepository;
 
         public PostsController(BaseControllerContext<Core.Posts.Entities.Post<string>, PostsRepository<string>> context,
             ContentBlocksRepository blocksRepository, IUserDataProvider<string> userDataProvider,
-            BRCContentPublisher publisher, PostTemplatesRepository<string> templatesRepository,
+            BRCPostsPublisher publisher, PostTemplatesRepository<string> templatesRepository,
             ICurrentUserProvider<string> currentUserProvider) : base(context,
             blocksRepository, userDataProvider, currentUserProvider)
         {
