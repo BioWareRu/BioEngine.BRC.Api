@@ -46,7 +46,7 @@ namespace BioEngine.BRC.Api.Components
         {
             return contentItem.SiteIds.Contains(_options.DefaultMainSiteId)
                 ? _options.DefaultMainSiteId
-                : contentItem.SiteIds.First();
+                : contentItem.SiteIds[0];
         }
 
 
