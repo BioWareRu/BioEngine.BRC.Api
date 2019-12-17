@@ -65,6 +65,6 @@ stages:
                         displayName: 'Push docker image'
                         inputs:
                             containerRegistry: 'BioWareRU DockerHub'
-                            repository: 'biowareru/bioengine-brc-bw'
+                            repository: 'biowareru/bioengine-brc-api'
                             command: 'push'
                             tags: '$(Version)'
