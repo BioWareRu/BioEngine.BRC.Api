@@ -62,9 +62,9 @@ stages:
                             tags: '$(Version)'
                             arguments: --build-arg version=$(Version)
                     -   task: Docker@2
-                            displayName: 'Push docker image'
-                            inputs:
-                                containerRegistry: 'BioWareRU DockerHub'
-                                repository: 'biowareru/bioengine-brc-bw'
-                                command: 'push'
-                                tags: '$(Version)'
+                        displayName: 'Push docker image'
+                        inputs:
+                            containerRegistry: 'BioWareRU DockerHub'
+                            repository: 'biowareru/bioengine-brc-bw'
+                            command: 'push'
+                            tags: '$(Version)'
