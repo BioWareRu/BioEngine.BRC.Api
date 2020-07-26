@@ -1,14 +1,12 @@
+using System;
 using System.Threading.Tasks;
-using BioEngine.BRC.Domain.Entities;
-using BioEngine.Core.Abstractions;
-using BioEngine.Core.Entities;
-using BioEngine.Core.Posts.Entities;
-using BioEngine.Core.Search;
-using BioEngine.Core.Web;
-using BioEngine.Core.Pages.Entities;
+using BioEngine.BRC.Common.Entities;
+using BioEngine.BRC.Common.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Sitko.Core.Repository;
+using Sitko.Core.Search;
 
 namespace BioEngine.BRC.Api.Controllers
 {
@@ -21,20 +19,21 @@ namespace BioEngine.BRC.Api.Controllers
         {
         }
 
-        private IBioRepository<TEntity> GetRepository<TEntity>() where TEntity : class, IEntity
+        private IRepository<TEntity, TEntityPk> GetRepository<TEntity, TEntityPk>()
+            where TEntity : class, IEntity<TEntityPk>
         {
-            return HttpContext.RequestServices.GetRequiredService<IBioRepository<TEntity>>();
+            return HttpContext.RequestServices.GetRequiredService<IRepository<TEntity, TEntityPk>>();
         }
 
-        private ISearchProvider<TEntity> GetSearchProvider<TEntity>() where TEntity : BaseEntity
+        private ISearchProvider<TEntity, Guid> GetSearchProvider<TEntity>() where TEntity : BaseEntity
         {
-            return HttpContext.RequestServices.GetRequiredService<ISearchProvider<TEntity>>();
+            return HttpContext.RequestServices.GetRequiredService<ISearchProvider<TEntity, Guid>>();
         }
 
         private async Task<bool> ReindexAsync<TEntity>()
             where TEntity : BaseEntity
         {
-            var repository = GetRepository<TEntity>();
+            var repository = GetRepository<TEntity, Guid>();
             var searchProvider = GetSearchProvider<TEntity>();
 
             var entities = await repository.GetAllAsync();
@@ -63,7 +62,7 @@ namespace BioEngine.BRC.Api.Controllers
         [HttpGet("reindex/posts")]
         public Task<bool> ReindexPostsAsync()
         {
-            return ReindexAsync<Post<string>>();
+            return ReindexAsync<Post>();
         }
 
         [HttpGet("reindex/pages")]

@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BioEngine.BRC.Domain.Entities;
-using BioEngine.Core.Abstractions;
-using BioEngine.Core.Posts.Entities;
-using BioEngine.Core.Properties;
-using BioEngine.Core.Repository;
-using BioEngine.Extra.Facebook;
-using BioEngine.Extra.IPB.Properties;
-using BioEngine.Extra.IPB.Publishing;
-using BioEngine.Extra.Twitter;
+using BioEngine.BRC.Common.Entities;
+using BioEngine.BRC.Common.Entities.Abstractions;
+using BioEngine.BRC.Common.Facebook;
+using BioEngine.BRC.Common.IPB.Properties;
+using BioEngine.BRC.Common.IPB.Publishing;
+using BioEngine.BRC.Common.Properties;
+using BioEngine.BRC.Common.Repository;
+using BioEngine.BRC.Common.Twitter;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
+using Sitko.Core.Repository;
 
 namespace BioEngine.BRC.Api.Components
 {
@@ -50,7 +50,7 @@ namespace BioEngine.BRC.Api.Components
         }
 
 
-        public async Task PublishOrDeleteAsync(Post<string> post,
+        public async Task PublishOrDeleteAsync(Post post,
             PropertyChange[] changes)
         {
             var sites = await _sitesRepository.GetByIdsAsync(post.SiteIds);
@@ -130,7 +130,7 @@ namespace BioEngine.BRC.Api.Components
             }
         }
 
-        public async Task DeleteAsync(Post<string> post)
+        public async Task DeleteAsync(Post post)
         {
             var sites = await _sitesRepository.GetByIdsAsync(post.SiteIds);
             foreach (var site in sites)

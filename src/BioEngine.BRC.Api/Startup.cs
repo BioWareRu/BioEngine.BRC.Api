@@ -2,10 +2,9 @@
 using System.Globalization;
 using BioEngine.BRC.Api.Components;
 using BioEngine.BRC.Common;
-using BioEngine.Core.Api;
-using BioEngine.Core.Web;
-using BioEngine.Extra.IPB.Controllers;
-using Elastic.Apm.NetCoreAll;
+using BioEngine.BRC.Common.IPB.Controllers;
+using BioEngine.BRC.Common.Web;
+using BioEngine.BRC.Common.Web.Api;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Routing;
@@ -15,7 +14,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace BioEngine.BRC.Api
 {
-    public class Startup : BioEngineApiStartup
+    public class Startup : BRCApiStartup
     {
         public Startup(IConfiguration configuration, IHostEnvironment environment) : base(configuration,
             environment)
@@ -27,9 +26,9 @@ namespace BioEngine.BRC.Api
             return base.ConfigureMvc(mvcBuilder).AddApplicationPart(typeof(ForumsController).Assembly);
         }
 
-        public override void ConfigureServices(IServiceCollection services)
+        protected override void ConfigureAppServices(IServiceCollection services)
         {
-            base.ConfigureServices(services);
+            base.ConfigureAppServices(services);
 
             services.RegisterApiEntities(GetType().Assembly);
             services.AddScoped<BRCPostsPublisher>();
@@ -52,9 +51,9 @@ namespace BioEngine.BRC.Api
             });
         }
 
-        protected override void ConfigureBeforeRouting(IApplicationBuilder app, IHostEnvironment env)
+        protected override void ConfigureBeforeRoutingMiddleware(IApplicationBuilder app)
         {
-            base.ConfigureBeforeRouting(app, env);
+            base.ConfigureBeforeRoutingMiddleware(app);
             var supportedCultures = new[] {new CultureInfo("ru-RU"), new CultureInfo("ru")};
 
             app.UseRequestLocalization(new RequestLocalizationOptions
@@ -67,25 +66,16 @@ namespace BioEngine.BRC.Api
             });
         }
 
-        protected override void ConfigureAfterRouting(IApplicationBuilder app, IHostEnvironment env)
+        protected override void ConfigureAfterRoutingMiddleware(IApplicationBuilder app)
         {
-            base.ConfigureAfterRouting(app, env);
+            base.ConfigureAfterRoutingMiddleware(app);
             app.UseCors("allorigins");
         }
 
-        protected override void ConfigureEndpoints(IApplicationBuilder app, IHostEnvironment env, IEndpointRouteBuilder endpoints)
+        protected override void ConfigureEndpoints(IApplicationBuilder app, IEndpointRouteBuilder endpointRouteBuilder)
         {
-            endpoints.AddBrcRoutes();
-            base.ConfigureEndpoints(app, env, endpoints);
-        }
-
-        protected override void ConfigureStart(IApplicationBuilder appBuilder)
-        {
-            base.ConfigureStart(appBuilder);
-            if (Environment.IsProduction())
-            {
-                appBuilder.UseAllElasticApm(Configuration);
-            }
+            endpointRouteBuilder.AddBrcRoutes();
+            base.ConfigureEndpoints(app, endpointRouteBuilder);
         }
     }
 

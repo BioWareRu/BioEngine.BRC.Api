@@ -4,10 +4,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using BioEngine.Core.Posts.Db;
-using BioEngine.Core.Repository;
-using BioEngine.Core.Routing;
-using BioEngine.Core.Web;
+using BioEngine.BRC.Common.Repository;
+using BioEngine.BRC.Common.Routing;
+using BioEngine.BRC.Common.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
@@ -19,12 +18,12 @@ namespace BioEngine.BRC.Api.Controllers
     {
         private readonly StorageItemsRepository _storageItemsRepository;
         private readonly LinkGenerator _linkGenerator;
-        private readonly PostsRepository<string> _postsRepository;
+        private readonly PostsRepository _postsRepository;
         private readonly ILogger<StuffController> _logger;
 
         public StuffController(BaseControllerContext context, StorageItemsRepository storageItemsRepository,
             LinkGenerator linkGenerator,
-            PostsRepository<string> postsRepository,
+            PostsRepository postsRepository,
             ILogger<StuffController> logger) :
             base(context)
         {
@@ -39,7 +38,7 @@ namespace BioEngine.BRC.Api.Controllers
         {
             var httpClient = new HttpClient();
             var sha256 = SHA256.Create();
-            _storageItemsRepository.BeginBatch();
+            await _storageItemsRepository.BeginBatchAsync();
             var items = await _storageItemsRepository.GetAllAsync();
             foreach (var item in items.items)
             {
@@ -56,7 +55,7 @@ namespace BioEngine.BRC.Api.Controllers
                 }
             }
 
-            await _storageItemsRepository.FinishBatchAsync();
+            await _storageItemsRepository.CommitBatchAsync();
 
             return Ok();
         }

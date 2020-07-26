@@ -1,4 +1,4 @@
-@model BioEngine.Core.Web.Models.BlockViewModel<BioEngine.Core.Entities.Blocks.FileBlock, BioEngine.Core.Entities.Blocks.FileBlockData>
+@model BioEngine.BRC.Common.Web.Models.BlockViewModel<BioEngine.BRC.Common.Entities.Blocks.FileBlock, BioEngine.BRC.Common.Entities.Blocks.FileBlockData>
 
 <a href="@Model.Block.Data.File.PublicUri" title="Скачать">
     Скачать файл: @Model.Block.Data.File.FileName - @Model.Block.Data.File.HumanSize - @Model.Block.Data.File.DateUpdated.DateTime.ToShortDateString()

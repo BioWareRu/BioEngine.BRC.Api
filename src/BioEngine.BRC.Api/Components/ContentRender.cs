@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using BioEngine.Core.Abstractions;
-using BioEngine.Core.Entities;
-using BioEngine.Core.Web;
-using BioEngine.Core.Web.RenderService;
+using BioEngine.BRC.Common.Entities;
+using BioEngine.BRC.Common.Entities.Abstractions;
+using BioEngine.BRC.Common.Web;
+using BioEngine.BRC.Common.Web.RenderService;
 
 namespace BioEngine.BRC.Api.Components
 {

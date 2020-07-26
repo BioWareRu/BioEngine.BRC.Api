@@ -1,9 +1,9 @@
-﻿using BioEngine.BRC.Api.Entities.Request;
-using BioEngine.BRC.Domain.Entities;
-using BioEngine.BRC.Domain.Repository;
-using BioEngine.Core.Api;
-using BioEngine.Core.Repository;
-using BioEngine.Core.Web;
+﻿using System;
+using BioEngine.BRC.Api.Entities.Request;
+using BioEngine.BRC.Common.Entities;
+using BioEngine.BRC.Common.Repository;
+using BioEngine.BRC.Common.Web;
+using BioEngine.BRC.Common.Web.Api;
 
 namespace BioEngine.BRC.Api.Controllers
 {
@@ -16,7 +16,7 @@ namespace BioEngine.BRC.Api.Controllers
         }
 
 
-        public GamesController(BaseControllerContext<Game, GamesRepository> context,
+        public GamesController(BaseControllerContext<Game, Guid, GamesRepository> context,
             ContentBlocksRepository blocksRepository) : base(context,
             blocksRepository)
         {

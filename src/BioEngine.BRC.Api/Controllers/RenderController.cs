@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using BioEngine.Core.Abstractions;
-using BioEngine.Core.Repository;
-using BioEngine.Core.Web;
+using BioEngine.BRC.Common.Entities.Abstractions;
+using BioEngine.BRC.Common.Repository;
+using BioEngine.BRC.Common.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
