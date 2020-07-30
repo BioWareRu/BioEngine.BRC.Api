@@ -8,7 +8,6 @@ using BioEngine.BRC.Common.Repository;
 using BioEngine.BRC.Common.Users;
 using BioEngine.BRC.Common.Web;
 using BioEngine.BRC.Common.Web.Api.Response;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sitko.Core.Repository;
@@ -25,8 +24,9 @@ namespace BioEngine.BRC.Api.Controllers
         public PostsController(BaseControllerContext<Post, Guid, PostsRepository> context,
             ContentBlocksRepository blocksRepository, IUserDataProvider userDataProvider,
             ICurrentUserProvider currentUserProvider, BRCPostsPublisher publisher,
-            PostTemplatesRepository<string> templatesRepository) : base(context, blocksRepository, userDataProvider,
-            currentUserProvider)
+            PostTemplatesRepository<string> templatesRepository, StorageItemsRepository storageItemsRepository) : base(
+            context, blocksRepository, userDataProvider,
+            currentUserProvider, storageItemsRepository)
         {
             _publisher = publisher;
             _templatesRepository = templatesRepository;

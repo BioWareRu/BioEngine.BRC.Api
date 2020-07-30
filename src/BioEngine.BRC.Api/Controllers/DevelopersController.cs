@@ -20,8 +20,8 @@ namespace BioEngine.BRC.Api.Controllers
 
         public DevelopersController(
             BaseControllerContext<Developer, Guid, DevelopersRepository> context,
-            ContentBlocksRepository blocksRepository) : base(context,
-            blocksRepository)
+            ContentBlocksRepository blocksRepository, StorageItemsRepository storageItemsRepository) : base(context,
+            blocksRepository, storageItemsRepository)
         {
         }
     }

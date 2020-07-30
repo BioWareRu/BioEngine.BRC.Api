@@ -11,8 +11,8 @@ namespace BioEngine.BRC.Api.Controllers
     public class AdsController : AdsApiController
     {
         public AdsController(BaseControllerContext<Ad, Guid, AdsRepository> context,
-            ContentBlocksRepository blocksRepository) : base(context,
-            blocksRepository)
+            ContentBlocksRepository blocksRepository, StorageItemsRepository storageItemsRepository) : base(context,
+            blocksRepository, storageItemsRepository)
         {
         }
     }
