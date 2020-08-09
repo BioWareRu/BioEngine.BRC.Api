@@ -3,7 +3,7 @@
 <p style="text-align: center">
     @foreach (var picture in Model.Block.Data.Pictures)
     {
-        var linkUri = picture.PictureInfo?.LargeThumbnail?.PublicUri ?? picture.PublicUri;
+        var linkUri = picture.PublicUri;
         var imgUri = picture.PictureInfo?.MediumThumbnail?.PublicUri ?? picture.PublicUri;
         <a class="ipsAttachLink ipsAttachLink_image" href="@linkUri" data-ipslightbox="" data-ipslightbox-group="@Model.Block.Id">
             <img class="ipsImage ipsImage_thumbnailed" data-fileid="@picture.Id" src="@imgUri" alt="@picture.FileName"/>
