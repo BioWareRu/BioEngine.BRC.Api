@@ -10,6 +10,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Sitko.Core.Swagger" Version="3.4.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\BioEngine.BRC.Common\src\BioEngine.BRC.Common\BioEngine.BRC.Common.csproj" Condition="Exists('..\..\..\BioEngine.BRC.Common')" />

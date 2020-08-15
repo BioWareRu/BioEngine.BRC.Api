@@ -9,6 +9,7 @@ using BioEngine.BRC.Common.Posts.Api;
 using BioEngine.BRC.Common.Seo;
 using BioEngine.BRC.Common.Twitter;
 using BioEngine.BRC.Common.Web.Api;
+using Sitko.Core.Swagger;
 
 namespace BioEngine.BRC.Api
 {
@@ -41,7 +42,12 @@ namespace BioEngine.BRC.Api
                 .AddIpbUsers<IPBApiUsersModule, IPBApiUsersModuleConfig, IPBApiCurrentUserProvider>()
                 .AddModule<TwitterModule>()
                 .AddModule<FacebookModule>()
-                .AddModule<AdsApiModule>();
+                .AddModule<AdsApiModule>()
+                .AddModule<SwaggerModule, SwaggerModuleConfig>((configuration, environment, moduleConfig) =>
+                {
+                    moduleConfig.Title = "BRC Games";
+                    moduleConfig.EnableTokenAuth = true;
+                });
         }
     }
 }
