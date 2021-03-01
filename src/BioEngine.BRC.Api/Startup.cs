@@ -5,7 +5,6 @@ using BioEngine.BRC.Common;
 using BioEngine.Core.Api;
 using BioEngine.Core.Web;
 using BioEngine.Extra.IPB.Controllers;
-using Elastic.Apm.NetCoreAll;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Routing;
@@ -77,15 +76,6 @@ namespace BioEngine.BRC.Api
         {
             endpoints.AddBrcRoutes();
             base.ConfigureEndpoints(app, env, endpoints);
-        }
-
-        protected override void ConfigureStart(IApplicationBuilder appBuilder)
-        {
-            base.ConfigureStart(appBuilder);
-            if (Environment.IsProduction())
-            {
-                appBuilder.UseAllElasticApm(Configuration);
-            }
         }
     }
 
