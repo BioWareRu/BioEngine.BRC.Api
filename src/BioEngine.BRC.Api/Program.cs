@@ -55,7 +55,6 @@ namespace BioEngine.BRC.Api
                 .AddModule<PagesApiModule>()
                 .AddElasticSearch()
                 .AddModule<ApiModule, ApiModuleConfig>((configuration, env) => new ApiModuleConfig())
-                .AddLogging()
                 .AddS3Storage()
                 .AddModule<SeoModule>()
                 .AddModule<IPBApiModule, IPBApiModuleConfig>((configuration, env) =>
